@@ -1,0 +1,457 @@
+<!DOCTYPE html><html lang="ru"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Личный кабинет — Банкетные решения</title>
+  <meta name="description" content="Кейтеринг и выездные банкеты: меню, калькулятор выхода еды и сметы, оформление заказа.">
+  <link rel="stylesheet" href="/static/css/style.css">
+  <link rel="icon" href="/static/img/favicon.svg" type="image/svg+xml">
+</head>
+<body>
+<a class="skip-link" href="#main">Перейти к содержанию</a>
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="logo" href="/" aria-label="Банкетные решения — на главную">
+      <span class="logo-mark">
+        <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 25h28"></path><path d="M9 25c0-6.6 4.9-11 11-11s11 4.4 11 11"></path><path d="M20 14v-3"></path><circle cx="20" cy="9" r="1.6"></circle><path d="M6 29h28"></path><path d="M12 25v4M28 25v4"></path></svg>
+      </span>
+      <span class="logo-text"><b>Банкетные решения</b><small>выездной кейтеринг · Ульяновск</small></span>
+    </a>
+    <nav class="main-nav" aria-label="Основная навигация">
+      <a href="/catalog/">Каталог блюд</a>
+      <a href="/calculator/">Калькулятор</a>
+      <a href="/checkout/">Оформить заказ</a>
+      <a href="/contacts/">Контакты</a>
+    </nav>
+    <div class="header-actions">
+      
+        
+        <a class="btn btn-outline btn-sm" href="/account/">Личный кабинет</a>
+        <form class="logout-form" action="/logout/" method="post">
+          <input type="hidden" name="csrfmiddlewaretoken" value="QV0Ar9UKpyI520vW002GMiQ97k7gwsjjrmWvxlLmw86Bol0hmANUxlTWlNRAhtyQ">
+          <button class="btn btn-primary btn-sm" type="submit">Выйти</button>
+        </form>
+      
+      <button class="burger" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="mobile-menu"><span></span></button>
+    </div>
+  </div>
+  <div class="mobile-menu" id="mobile-menu">
+    <div class="container">
+      <nav aria-label="Мобильная навигация">
+        <a href="/catalog/">Каталог блюд</a>
+        <a href="/calculator/">Калькулятор</a>
+        <a href="/checkout/">Оформить заказ</a>
+        <a href="/contacts/">Контакты</a>
+        
+          <a href="/account/">Личный кабинет</a>
+          
+        
+      </nav>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+  
+</div>
+
+<main id="main">
+
+<div class="container">
+  <nav class="breadcrumbs" aria-label="Хлебные крошки">
+    <a href="/">Главная</a><span>›</span><span aria-current="page">Личный кабинет</span>
+  </nav>
+  <div class="page-head">
+    <h1>Личный кабинет</h1>
+    <p>Иван Иванов, добрый день! Здесь хранятся заказы, сметы и даты мероприятий.</p>
+  </div>
+
+  <div class="stats stats-wide">
+    <div class="stat"><span>Всего заказов</span><b>14</b></div>
+    <div class="stat"><span>Активных</span><b>8</b></div>
+    <div class="stat"><span>Отзывов</span><b>6</b></div>
+  </div>
+
+  <div class="dash">
+    <aside class="side">
+      <div class="side-user">
+        <b>Иван Иванов</b>
+        <span>ivan@example.com</span>
+        <span>+7 (900) 100-20-13</span>
+      </div>
+      <nav aria-label="Разделы кабинета">
+        <a class="active" href="/account/" aria-current="page">Мои заказы</a>
+        <a href="/password/">Смена пароля</a>
+        
+        <form action="/logout/" method="post">
+          <input type="hidden" name="csrfmiddlewaretoken" value="QV0Ar9UKpyI520vW002GMiQ97k7gwsjjrmWvxlLmw86Bol0hmANUxlTWlNRAhtyQ">
+          <button class="side-exit" type="submit">Выйти</button>
+        </form>
+      </nav>
+      <a class="btn btn-primary btn-block" href="/checkout/">Новый заказ</a>
+    </aside>
+
+    <div>
+      
+        <article class="order-card">
+          <div class="order-top">
+            <div>
+              <h2 class="order-title"><a href="/account/orders/22/">Заказ BR-2611-022</a></h2>
+              <div class="small muted">Создан 07 ноября 2026, 21:35</div>
+            </div>
+            <span class="badge badge-warning">Новая</span>
+          </div>
+          <div class="order-meta">
+            <div><span>Дата</span><b>23 ноября 2026</b></div>
+            <div><span>Гостей</span><b>150</b></div>
+            <div><span>Формат</span><b>Фуршет</b></div>
+            <div><span>Сумма</span><b>198350 ₽</b></div>
+          </div>
+          <p class="small muted order-address">г. Ульяновск, ул. Гончарова, 1</p>
+          <div class="order-actions">
+            <a class="btn btn-outline" href="/account/orders/22/">Открыть заказ</a>
+            <a class="btn btn-ghost" href="/account/orders/22/print/">Печатная форма</a>
+            
+              <a class="btn btn-ghost" href="/account/orders/22/edit/">Изменить</a>
+            
+          </div>
+        </article>
+      
+        <article class="order-card">
+          <div class="order-top">
+            <div>
+              <h2 class="order-title"><a href="/account/orders/16/">Заказ BR-2611-016</a></h2>
+              <div class="small muted">Создан 03 ноября 2026, 23:35</div>
+            </div>
+            <span class="badge badge-neutral">Завершён</span>
+          </div>
+          <div class="order-meta">
+            <div><span>Дата</span><b>30 октября 2026</b></div>
+            <div><span>Гостей</span><b>150</b></div>
+            <div><span>Формат</span><b>Кофе-брейк</b></div>
+            <div><span>Сумма</span><b>218375 ₽</b></div>
+          </div>
+          <p class="small muted order-address">г. Ульяновск, ул. Гончарова, 1</p>
+          <div class="order-actions">
+            <a class="btn btn-outline" href="/account/orders/16/">Открыть заказ</a>
+            <a class="btn btn-ghost" href="/account/orders/16/print/">Печатная форма</a>
+            
+          </div>
+        </article>
+      
+        <article class="order-card">
+          <div class="order-top">
+            <div>
+              <h2 class="order-title"><a href="/account/orders/2/">Заказ BR-2611-002</a></h2>
+              <div class="small muted">Создан 21 октября 2026, 12:35</div>
+            </div>
+            <span class="badge badge-neutral">Завершён</span>
+          </div>
+          <div class="order-meta">
+            <div><span>Дата</span><b>20 октября 2026</b></div>
+            <div><span>Гостей</span><b>35</b></div>
+            <div><span>Формат</span><b>Фуршет</b></div>
+            <div><span>Сумма</span><b>50815 ₽</b></div>
+          </div>
+          <p class="small muted order-address">г. Ульяновск, ул. Ленина, 45</p>
+          <div class="order-actions">
+            <a class="btn btn-outline" href="/account/orders/2/">Открыть заказ</a>
+            <a class="btn btn-ghost" href="/account/orders/2/print/">Печатная форма</a>
+            
+          </div>
+        </article>
+      
+        <article class="order-card">
+          <div class="order-top">
+            <div>
+              <h2 class="order-title"><a href="/account/orders/1/">Заказ BR-2611-001</a></h2>
+              <div class="small muted">Создан 19 октября 2026, 22:35</div>
+            </div>
+            <span class="badge badge-success">Подтверждён</span>
+          </div>
+          <div class="order-meta">
+            <div><span>Дата</span><b>10 декабря 2026</b></div>
+            <div><span>Гостей</span><b>40</b></div>
+            <div><span>Формат</span><b>Фуршет</b></div>
+            <div><span>Сумма</span><b>78600 ₽</b></div>
+          </div>
+          <p class="small muted order-address">г. Ульяновск, пр-т Нариманова, 12</p>
+          <div class="order-actions">
+            <a class="btn btn-outline" href="/account/orders/1/">Открыть заказ</a>
+            <a class="btn btn-ghost" href="/account/orders/1/print/">Печатная форма</a>
+            
+              <a class="btn btn-ghost" href="/account/orders/1/edit/">Изменить</a>
+            
+          </div>
+        </article>
+      
+        <article class="order-card">
+          <div class="order-top">
+            <div>
+              <h2 class="order-title"><a href="/account/orders/7/">Заказ BR-2611-007</a></h2>
+              <div class="small muted">Создан 18 октября 2026, 21:35</div>
+            </div>
+            <span class="badge badge-neutral">Завершён</span>
+          </div>
+          <div class="order-meta">
+            <div><span>Дата</span><b>24 сентября 2026</b></div>
+            <div><span>Гостей</span><b>50</b></div>
+            <div><span>Формат</span><b>Банкет</b></div>
+            <div><span>Сумма</span><b>113200 ₽</b></div>
+          </div>
+          <p class="small muted order-address">г. Ульяновск, ул. Минаева, 3</p>
+          <div class="order-actions">
+            <a class="btn btn-outline" href="/account/orders/7/">Открыть заказ</a>
+            <a class="btn btn-ghost" href="/account/orders/7/print/">Печатная форма</a>
+            
+          </div>
+        </article>
+      
+        <article class="order-card">
+          <div class="order-top">
+            <div>
+              <h2 class="order-title"><a href="/account/orders/3/">Заказ BR-2611-003</a></h2>
+              <div class="small muted">Создан 17 октября 2026, 12:35</div>
+            </div>
+            <span class="badge badge-warning">Новая</span>
+          </div>
+          <div class="order-meta">
+            <div><span>Дата</span><b>01 декабря 2026</b></div>
+            <div><span>Гостей</span><b>60</b></div>
+            <div><span>Формат</span><b>Банкет</b></div>
+            <div><span>Сумма</span><b>127700 ₽</b></div>
+          </div>
+          <p class="small muted order-address">г. Ульяновск, ул. Ленина, 45</p>
+          <div class="order-actions">
+            <a class="btn btn-outline" href="/account/orders/3/">Открыть заказ</a>
+            <a class="btn btn-ghost" href="/account/orders/3/print/">Печатная форма</a>
+            
+              <a class="btn btn-ghost" href="/account/orders/3/edit/">Изменить</a>
+            
+          </div>
+        </article>
+      
+        <article class="order-card">
+          <div class="order-top">
+            <div>
+              <h2 class="order-title"><a href="/account/orders/10/">Заказ BR-2611-010</a></h2>
+              <div class="small muted">Создан 02 октября 2026, 11:35</div>
+            </div>
+            <span class="badge badge-neutral">Завершён</span>
+          </div>
+          <div class="order-meta">
+            <div><span>Дата</span><b>06 октября 2026</b></div>
+            <div><span>Гостей</span><b>150</b></div>
+            <div><span>Формат</span><b>Фуршет</b></div>
+            <div><span>Сумма</span><b>198350 ₽</b></div>
+          </div>
+          <p class="small muted order-address">г. Ульяновск, ул. Ленина, 45</p>
+          <div class="order-actions">
+            <a class="btn btn-outline" href="/account/orders/10/">Открыть заказ</a>
+            <a class="btn btn-ghost" href="/account/orders/10/print/">Печатная форма</a>
+            
+          </div>
+        </article>
+      
+        <article class="order-card">
+          <div class="order-top">
+            <div>
+              <h2 class="order-title"><a href="/account/orders/31/">Заказ BR-2611-031</a></h2>
+              <div class="small muted">Создан 24 сентября 2026, 10:35</div>
+            </div>
+            <span class="badge badge-success">Подтверждён</span>
+          </div>
+          <div class="order-meta">
+            <div><span>Дата</span><b>29 декабря 2026</b></div>
+            <div><span>Гостей</span><b>30</b></div>
+            <div><span>Формат</span><b>Банкет</b></div>
+            <div><span>Сумма</span><b>68400 ₽</b></div>
+          </div>
+          <p class="small muted order-address">г. Ульяновск, ул. Ленина, 45</p>
+          <div class="order-actions">
+            <a class="btn btn-outline" href="/account/orders/31/">Открыть заказ</a>
+            <a class="btn btn-ghost" href="/account/orders/31/print/">Печатная форма</a>
+            
+              <a class="btn btn-ghost" href="/account/orders/31/edit/">Изменить</a>
+            
+          </div>
+        </article>
+      
+        <article class="order-card">
+          <div class="order-top">
+            <div>
+              <h2 class="order-title"><a href="/account/orders/28/">Заказ BR-2611-028</a></h2>
+              <div class="small muted">Создан 18 сентября 2026, 01:35</div>
+            </div>
+            <span class="badge badge-warning">Новая</span>
+          </div>
+          <div class="order-meta">
+            <div><span>Дата</span><b>17 декабря 2026</b></div>
+            <div><span>Гостей</span><b>50</b></div>
+            <div><span>Формат</span><b>Кофе-брейк</b></div>
+            <div><span>Сумма</span><b>77950 ₽</b></div>
+          </div>
+          <p class="small muted order-address">г. Ульяновск, ул. Рябикова, 8</p>
+          <div class="order-actions">
+            <a class="btn btn-outline" href="/account/orders/28/">Открыть заказ</a>
+            <a class="btn btn-ghost" href="/account/orders/28/print/">Печатная форма</a>
+            
+              <a class="btn btn-ghost" href="/account/orders/28/edit/">Изменить</a>
+            
+          </div>
+        </article>
+      
+        <article class="order-card">
+          <div class="order-top">
+            <div>
+              <h2 class="order-title"><a href="/account/orders/19/">Заказ BR-2611-019</a></h2>
+              <div class="small muted">Создан 17 сентября 2026, 03:35</div>
+            </div>
+            <span class="badge badge-neutral">Завершён</span>
+          </div>
+          <div class="order-meta">
+            <div><span>Дата</span><b>11 ноября 2026</b></div>
+            <div><span>Гостей</span><b>35</b></div>
+            <div><span>Формат</span><b>Банкет</b></div>
+            <div><span>Сумма</span><b>82000 ₽</b></div>
+          </div>
+          <p class="small muted order-address">г. Ульяновск, ул. Рябикова, 8</p>
+          <div class="order-actions">
+            <a class="btn btn-outline" href="/account/orders/19/">Открыть заказ</a>
+            <a class="btn btn-ghost" href="/account/orders/19/print/">Печатная форма</a>
+            
+          </div>
+        </article>
+      
+        <article class="order-card">
+          <div class="order-top">
+            <div>
+              <h2 class="order-title"><a href="/account/orders/13/">Заказ BR-2611-013</a></h2>
+              <div class="small muted">Создан 05 сентября 2026, 12:35</div>
+            </div>
+            <span class="badge badge-neutral">Завершён</span>
+          </div>
+          <div class="order-meta">
+            <div><span>Дата</span><b>18 октября 2026</b></div>
+            <div><span>Гостей</span><b>75</b></div>
+            <div><span>Формат</span><b>Фуршет</b></div>
+            <div><span>Сумма</span><b>132325 ₽</b></div>
+          </div>
+          <p class="small muted order-address">г. Ульяновск, ул. Ленина, 45</p>
+          <div class="order-actions">
+            <a class="btn btn-outline" href="/account/orders/13/">Открыть заказ</a>
+            <a class="btn btn-ghost" href="/account/orders/13/print/">Печатная форма</a>
+            
+          </div>
+        </article>
+      
+        <article class="order-card">
+          <div class="order-top">
+            <div>
+              <h2 class="order-title"><a href="/account/orders/25/">Заказ BR-2611-025</a></h2>
+              <div class="small muted">Создан 01 сентября 2026, 17:35</div>
+            </div>
+            <span class="badge badge-warning">Новая</span>
+          </div>
+          <div class="order-meta">
+            <div><span>Дата</span><b>05 декабря 2026</b></div>
+            <div><span>Гостей</span><b>20</b></div>
+            <div><span>Формат</span><b>Фуршет</b></div>
+            <div><span>Сумма</span><b>39380 ₽</b></div>
+          </div>
+          <p class="small muted order-address">г. Ульяновск, пр-т Нариманова, 12</p>
+          <div class="order-actions">
+            <a class="btn btn-outline" href="/account/orders/25/">Открыть заказ</a>
+            <a class="btn btn-ghost" href="/account/orders/25/print/">Печатная форма</a>
+            
+              <a class="btn btn-ghost" href="/account/orders/25/edit/">Изменить</a>
+            
+          </div>
+        </article>
+      
+        <article class="order-card">
+          <div class="order-top">
+            <div>
+              <h2 class="order-title"><a href="/account/orders/34/">Заказ BR-2611-034</a></h2>
+              <div class="small muted">Создан 01 сентября 2026, 00:35</div>
+            </div>
+            <span class="badge badge-neutral">Готовится</span>
+          </div>
+          <div class="order-meta">
+            <div><span>Дата</span><b>10 января 2027</b></div>
+            <div><span>Гостей</span><b>30</b></div>
+            <div><span>Формат</span><b>Фуршет</b></div>
+            <div><span>Сумма</span><b>43425 ₽</b></div>
+          </div>
+          <p class="small muted order-address">г. Ульяновск, пр-т Нариманова, 12</p>
+          <div class="order-actions">
+            <a class="btn btn-outline" href="/account/orders/34/">Открыть заказ</a>
+            <a class="btn btn-ghost" href="/account/orders/34/print/">Печатная форма</a>
+            
+              <a class="btn btn-ghost" href="/account/orders/34/edit/">Изменить</a>
+            
+          </div>
+        </article>
+      
+        <article class="order-card">
+          <div class="order-top">
+            <div>
+              <h2 class="order-title"><a href="/account/orders/4/">Заказ BR-2611-004</a></h2>
+              <div class="small muted">Создан 30 августа 2026, 03:35</div>
+            </div>
+            <span class="badge badge-warning">Новая</span>
+          </div>
+          <div class="order-meta">
+            <div><span>Дата</span><b>10 декабря 2026</b></div>
+            <div><span>Гостей</span><b>35</b></div>
+            <div><span>Формат</span><b>Кофе-брейк</b></div>
+            <div><span>Сумма</span><b>55488 ₽</b></div>
+          </div>
+          <p class="small muted order-address">г. Ульяновск, ул. Рябикова, 8</p>
+          <div class="order-actions">
+            <a class="btn btn-outline" href="/account/orders/4/">Открыть заказ</a>
+            <a class="btn btn-ghost" href="/account/orders/4/print/">Печатная форма</a>
+            
+              <a class="btn btn-ghost" href="/account/orders/4/edit/">Изменить</a>
+            
+          </div>
+        </article>
+      
+    </div>
+  </div>
+</div>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-main">
+    <div class="footer-brand">
+      <b>Банкетные решения</b>
+      <p>Ульяновск, ул. Гончарова, 1</p>
+      <a href="tel:+78422000000">+7 (8422) 00-00-00</a>
+      <a href="mailto:hello@banket.example">hello@banket.example</a>
+    </div>
+    <div class="footer-col">
+      <h3>Разделы</h3>
+      <a href="/catalog/">Каталог блюд</a>
+      <a href="/calculator/">Калькулятор</a>
+      <a href="/checkout/">Оформить заказ</a>
+      <a href="/contacts/">Контакты</a>
+    </div>
+    <div class="footer-col">
+      <h3>Кабинет</h3>
+      
+        <a href="/account/">Мои заказы</a>
+        <a href="/password/">Смена пароля</a>
+      
+    </div>
+  </div>
+  <div class="footer-bottom">© 2026 Банкетные решения. Учебный проект, вариант 16.</div>
+</footer>
+<div class="toast" id="toast" role="status" aria-live="polite">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 12 5 5 11-11"></path></svg><span></span>
+</div>
+<script src="/static/js/app.js"></script>
+
+
+
+</body></html>

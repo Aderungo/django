@@ -1,0 +1,101 @@
+{% load static %}<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Смета заказа {{ order.number }} — Банкетные решения</title>
+  <link rel="icon" href="{% static 'img/favicon.svg' %}" type="image/svg+xml">
+  <link rel="stylesheet" href="{% static 'css/print.css' %}">
+</head>
+<body>
+  <div class="print-actions">
+    <button class="print-btn" type="button" data-print>Печать</button>
+    <a class="print-link" href="{% url 'main:order_detail' order.pk %}">Вернуться к заказу</a>
+  </div>
+
+  <main class="sheet">
+    <header class="sheet-head">
+      <div>
+        <h1>Банкетные решения</h1>
+        <p>Выездной кейтеринг · Ульяновск, ул. Гончарова, 1 · +7 (8422) 00-00-00</p>
+      </div>
+      <div class="sheet-number">
+        <div>Смета заказа</div>
+        <strong>{{ order.number }}</strong>
+        <div>{{ order.created_at|date:"d.m.Y" }}</div>
+      </div>
+    </header>
+
+    <section>
+      <h2>Данные мероприятия</h2>
+      <table class="sheet-table">
+        <tbody>
+          <tr><th>Заказчик</th><td>{{ order.contact_name }}</td><th>Телефон</th><td>{{ order.contact_phone }}</td></tr>
+          <tr><th>E-mail</th><td>{{ order.contact_email }}</td><th>Статус</th><td>{{ order.get_status_display }}</td></tr>
+          <tr><th>Дата</th><td>{{ order.event_date|date:"d.m.Y" }}</td><th>Гостей</th><td>{{ order.guests }}</td></tr>
+          <tr><th>Формат</th><td>{{ order.event_format.name }}</td><th>Выход</th><td>{{ order.output_per_guest }} г/чел. (норма {{ order.event_format.min_output_per_guest }})</td></tr>
+          <tr><th>Адрес</th><td colspan="3">{{ order.address }}</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>Состав меню и стоимость</h2>
+      <table class="sheet-table sheet-items">
+        <thead>
+          <tr><th>№</th><th>Позиция</th><th>Цена, ₽</th><th>Кол-во</th><th>Сумма, ₽</th></tr>
+        </thead>
+        <tbody>
+          {% for item in order.items.all %}
+            <tr>
+              <td>{{ forloop.counter }}</td>
+              <td>{{ item.dish.name }}</td>
+              <td>{{ item.unit_price|floatformat:2 }}</td>
+              <td>{{ item.qty }}</td>
+              <td>{{ item.total|floatformat:2 }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>Смета</h2>
+      <table class="sheet-table sheet-totals">
+        <tbody>
+          <tr><th>Меню</th><td>{{ order.menu_total|floatformat:2 }} ₽</td></tr>
+          <tr><th>Оформление (+{{ order.decor_percent }} %)</th><td>{{ order.decor_total|floatformat:2 }} ₽</td></tr>
+          <tr><th>Персонал</th><td>{{ order.staff_total|floatformat:2 }} ₽</td></tr>
+          <tr><th>Посуда и текстиль</th><td>{{ order.tableware_total|floatformat:2 }} ₽</td></tr>
+          <tr class="grand"><th>Итого</th><td>{{ order.total|floatformat:2 }} ₽</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>Смены персонала</h2>
+      <table class="sheet-table">
+        <thead><tr><th>Роль</th><th>Человек</th><th>Часов</th><th>Ставка, ₽</th><th>Стоимость, ₽</th></tr></thead>
+        <tbody>
+          {% for shift in order.shifts.all %}
+            <tr><td>{{ shift.get_role_display }}</td><td>{{ shift.people }}</td><td>{{ shift.hours }}</td><td>{{ shift.rate|floatformat:2 }}</td><td>{{ shift.cost|floatformat:2 }}</td></tr>
+          {% empty %}
+            <tr><td colspan="5">Смены не назначены.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+
+    <footer class="sheet-foot">
+      <div>Смета рассчитана автоматически на сервере. Заказ действителен после подтверждения менеджером.</div>
+      <div class="sign">Подпись менеджера ____________________</div>
+    </footer>
+  </main>
+
+  <script>
+    document.querySelectorAll('[data-print]').forEach(function (button) {
+      button.addEventListener('click', function () { window.print(); });
+    });
+  </script>
+</body>
+</html>

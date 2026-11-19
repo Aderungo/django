@@ -1,0 +1,113 @@
+{% load static %}<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Банкетные решения — выездной кейтеринг в Ульяновске{% endblock %}</title>
+  <meta name="description" content="{% block description %}Кейтеринг и выездные банкеты: меню, калькулятор выхода еды и сметы, оформление заказа.{% endblock %}">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <link rel="icon" href="{% static 'img/favicon.svg' %}" type="image/svg+xml">
+</head>
+<body>
+<a class="skip-link" href="#main">Перейти к содержанию</a>
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="logo" href="{% url 'main:index' %}" aria-label="Банкетные решения — на главную">
+      <span class="logo-mark">
+        <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 25h28"/><path d="M9 25c0-6.6 4.9-11 11-11s11 4.4 11 11"/><path d="M20 14v-3"/><circle cx="20" cy="9" r="1.6"/><path d="M6 29h28"/><path d="M12 25v4M28 25v4"/></svg>
+      </span>
+      <span class="logo-text"><b>Банкетные решения</b><small>выездной кейтеринг · Ульяновск</small></span>
+    </a>
+    <nav class="main-nav" aria-label="Основная навигация">
+      <a href="{% url 'main:catalog' %}"{% if request.resolver_match.url_name == 'catalog' or request.resolver_match.url_name == 'dish_detail' %} class="active" aria-current="page"{% endif %}>Каталог блюд</a>
+      <a href="{% url 'main:calculator' %}"{% if request.resolver_match.url_name == 'calculator' %} class="active" aria-current="page"{% endif %}>Калькулятор</a>
+      <a href="{% url 'main:checkout' %}"{% if request.resolver_match.url_name == 'checkout' %} class="active" aria-current="page"{% endif %}>Оформить заказ</a>
+      <a href="{% url 'main:contacts' %}"{% if request.resolver_match.url_name == 'contacts' %} class="active" aria-current="page"{% endif %}>Контакты</a>
+    </nav>
+    <div class="header-actions">
+      {% if user.is_authenticated %}
+        {% if user.is_staff %}
+          <a class="btn btn-outline btn-sm" href="{% url 'main:manager_dashboard' %}">Панель менеджера</a>
+        {% endif %}
+        <a class="btn btn-outline btn-sm" href="{% url 'main:account' %}">Личный кабинет</a>
+        <form class="logout-form" action="{% url 'main:logout' %}" method="post">
+          {% csrf_token %}
+          <button class="btn btn-primary btn-sm" type="submit">Выйти</button>
+        </form>
+      {% else %}
+        <a class="btn btn-outline btn-sm" href="{% url 'main:login' %}">Войти</a>
+        <a class="btn btn-primary btn-sm" href="{% url 'main:register' %}">Регистрация</a>
+      {% endif %}
+      <button class="burger" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="mobile-menu"><span></span></button>
+    </div>
+  </div>
+  <div class="mobile-menu" id="mobile-menu">
+    <div class="container">
+      <nav aria-label="Мобильная навигация">
+        <a href="{% url 'main:catalog' %}">Каталог блюд</a>
+        <a href="{% url 'main:calculator' %}">Калькулятор</a>
+        <a href="{% url 'main:checkout' %}">Оформить заказ</a>
+        <a href="{% url 'main:contacts' %}">Контакты</a>
+        {% if user.is_authenticated %}
+          <a href="{% url 'main:account' %}">Личный кабинет</a>
+          {% if user.is_staff %}<a href="{% url 'main:manager_dashboard' %}">Панель менеджера</a>{% endif %}
+        {% else %}
+          <a href="{% url 'main:login' %}">Войти</a>
+          <a href="{% url 'main:register' %}">Регистрация</a>
+        {% endif %}
+      </nav>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+  {% if messages %}
+    <div class="messages" role="status" aria-live="polite">
+      {% for message in messages %}
+        <div class="notice {% if message.tags == 'error' %}notice-error{% elif message.tags == 'warning' %}notice-warning{% elif message.tags == 'success' %}notice-success{% else %}notice-info{% endif %}">
+          <div>{{ message }}</div>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+</div>
+
+<main id="main">
+{% block content %}{% endblock %}
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-main">
+    <div class="footer-brand">
+      <b>Банкетные решения</b>
+      <p>Ульяновск, ул. Гончарова, 1</p>
+      <a href="tel:+78422000000">+7 (8422) 00-00-00</a>
+      <a href="mailto:hello@banket.example">hello@banket.example</a>
+    </div>
+    <div class="footer-col">
+      <h3>Разделы</h3>
+      <a href="{% url 'main:catalog' %}">Каталог блюд</a>
+      <a href="{% url 'main:calculator' %}">Калькулятор</a>
+      <a href="{% url 'main:checkout' %}">Оформить заказ</a>
+      <a href="{% url 'main:contacts' %}">Контакты</a>
+    </div>
+    <div class="footer-col">
+      <h3>Кабинет</h3>
+      {% if user.is_authenticated %}
+        <a href="{% url 'main:account' %}">Мои заказы</a>
+        <a href="{% url 'main:password_change' %}">Смена пароля</a>
+      {% else %}
+        <a href="{% url 'main:login' %}">Войти</a>
+        <a href="{% url 'main:register' %}">Регистрация</a>
+      {% endif %}
+    </div>
+  </div>
+  <div class="footer-bottom">© 2026 Банкетные решения. Учебный проект, вариант 16.</div>
+</footer>
+<div class="toast" id="toast" role="status" aria-live="polite">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 12 5 5 11-11"/></svg><span></span>
+</div>
+<script src="{% static 'js/app.js' %}"></script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>

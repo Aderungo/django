@@ -1,0 +1,822 @@
+<!DOCTYPE html><html lang="ru"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Заказы — панель менеджера</title>
+  <meta name="description" content="Кейтеринг и выездные банкеты: меню, калькулятор выхода еды и сметы, оформление заказа.">
+  <link rel="stylesheet" href="/static/css/style.css">
+  <link rel="icon" href="/static/img/favicon.svg" type="image/svg+xml">
+</head>
+<body>
+<a class="skip-link" href="#main">Перейти к содержанию</a>
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="logo" href="/" aria-label="Банкетные решения — на главную">
+      <span class="logo-mark">
+        <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 25h28"></path><path d="M9 25c0-6.6 4.9-11 11-11s11 4.4 11 11"></path><path d="M20 14v-3"></path><circle cx="20" cy="9" r="1.6"></circle><path d="M6 29h28"></path><path d="M12 25v4M28 25v4"></path></svg>
+      </span>
+      <span class="logo-text"><b>Банкетные решения</b><small>выездной кейтеринг · Ульяновск</small></span>
+    </a>
+    <nav class="main-nav" aria-label="Основная навигация">
+      <a href="/catalog/">Каталог блюд</a>
+      <a href="/calculator/">Калькулятор</a>
+      <a href="/checkout/">Оформить заказ</a>
+      <a href="/contacts/">Контакты</a>
+    </nav>
+    <div class="header-actions">
+      
+        
+          <a class="btn btn-outline btn-sm" href="/manager/">Панель менеджера</a>
+        
+        <a class="btn btn-outline btn-sm" href="/account/">Личный кабинет</a>
+        <form class="logout-form" action="/logout/" method="post">
+          <input type="hidden" name="csrfmiddlewaretoken" value="2DPAbfUbHgSFQUnIFyQ5D9aTbXFzv0DEt3de4aq25xxOOMLz6mHxaPlvRv4NZBdj">
+          <button class="btn btn-primary btn-sm" type="submit">Выйти</button>
+        </form>
+      
+      <button class="burger" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="mobile-menu"><span></span></button>
+    </div>
+  </div>
+  <div class="mobile-menu" id="mobile-menu">
+    <div class="container">
+      <nav aria-label="Мобильная навигация">
+        <a href="/catalog/">Каталог блюд</a>
+        <a href="/calculator/">Калькулятор</a>
+        <a href="/checkout/">Оформить заказ</a>
+        <a href="/contacts/">Контакты</a>
+        
+          <a href="/account/">Личный кабинет</a>
+          <a href="/manager/">Панель менеджера</a>
+        
+      </nav>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+  
+</div>
+
+<main id="main">
+
+<div class="container">
+  <nav class="breadcrumbs" aria-label="Хлебные крошки">
+    <a href="/">Главная</a><span>›</span>
+    <a href="/manager/">Панель менеджера</a><span>›</span>
+    <span aria-current="page">Заказы</span>
+  </nav>
+  <div class="page-head">
+    <div class="page-head-row">
+      <div>
+        <h1>Заказы кейтеринга</h1>
+        <p>Поиск по номеру и контактам, фильтры по статусу, формату и датам, сортировка, пагинация по 20 записей.</p>
+      </div>
+      <div class="section-actions">
+        <a class="btn btn-ghost" href="/manager/orders.csv?">Экспорт CSV</a>
+        <a class="btn btn-primary" href="/manager/dishes/add/">Добавить блюдо</a>
+      </div>
+    </div>
+  </div>
+
+  <section class="panel" aria-labelledby="orders-filter-title">
+    <h2 class="visually-hidden" id="orders-filter-title">Фильтр заказов</h2>
+    <form class="filters" action="/manager/orders/" method="get">
+      <div class="field">
+        <label for="q">Поиск</label>
+        <input class="input" id="q" name="q" type="search" value="" placeholder="Номер, имя, телефон" autocomplete="off">
+      </div>
+      <div class="field">
+        <label for="status">Статус</label>
+        <select class="select" id="status" name="status">
+          <option value="">Все</option>
+          
+            <option value="new">Новая</option>
+          
+            <option value="confirmed">Подтверждён</option>
+          
+            <option value="cooking">Готовится</option>
+          
+            <option value="done">Завершён</option>
+          
+            <option value="cancelled">Отменён</option>
+          
+        </select>
+      </div>
+      <div class="field">
+        <label for="format">Формат</label>
+        <select class="select" id="format" name="format">
+          <option value="">Все</option>
+          
+            <option value="furshet">Фуршет</option>
+          
+            <option value="banket">Банкет</option>
+          
+            <option value="coffee">Кофе-брейк</option>
+          
+        </select>
+      </div>
+      <div class="field">
+        <label for="date_from">Дата с</label>
+        <input class="input" id="date_from" name="date_from" type="date" value="">
+      </div>
+      <div class="field">
+        <label for="date_to">Дата по</label>
+        <input class="input" id="date_to" name="date_to" type="date" value="">
+      </div>
+      <div class="field">
+        <label for="sort">Сортировка</label>
+        <select class="select" id="sort" name="sort">
+          
+            <option value="-created" selected="">Сначала новые</option>
+          
+            <option value="event">По дате мероприятия</option>
+          
+            <option value="-total">По сумме</option>
+          
+            <option value="status">По статусу</option>
+          
+        </select>
+      </div>
+      <div class="filter-actions">
+        <button class="btn btn-primary" type="submit">Показать</button>
+        <a class="btn btn-ghost" href="/manager/orders/">Сбросить</a>
+      </div>
+    </form>
+  </section>
+
+  <div class="catalog-bar">
+    <span>Найдено: <b>36</b> заказов</span>
+    <span>Страница <b>1</b> из <b>2</b></span>
+  </div>
+
+  <div class="table-wrap">
+    <table class="data">
+      <caption class="visually-hidden">Список заказов кейтеринга</caption>
+      <thead>
+        <tr>
+          <th scope="col">Заявка</th><th scope="col">Дата</th><th scope="col">Заказчик</th>
+          <th scope="col">Формат</th><th scope="col">Гостей</th><th scope="col">Сумма</th>
+          <th scope="col">Статус</th><th scope="col">Изменить</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+          <tr>
+            <td><a href="/account/orders/29/"><b>BR-2611-029</b></a></td>
+            <td>21.12.2026</td>
+            <td>Анна Петрова<br><span class="small muted">+7 (900) 100-20-14</span></td>
+            <td>Фуршет</td>
+            <td>35</td>
+            <td>62365 ₽</td>
+            <td><span class="badge badge-neutral">Готовится</span></td>
+            <td>
+              <form class="status-form" action="/manager/orders/29/status/" method="post">
+                <input type="hidden" name="csrfmiddlewaretoken" value="2DPAbfUbHgSFQUnIFyQ5D9aTbXFzv0DEt3de4aq25xxOOMLz6mHxaPlvRv4NZBdj">
+                <label class="visually-hidden" for="status-29">Статус заказа BR-2611-029</label>
+                <select class="select select-sm" id="status-29" name="status">
+                  
+                    <option value="new">Новая</option>
+                  
+                    <option value="confirmed">Подтверждён</option>
+                  
+                    <option value="cooking" selected="">Готовится</option>
+                  
+                    <option value="done">Завершён</option>
+                  
+                    <option value="cancelled">Отменён</option>
+                  
+                </select>
+                <button class="btn btn-ghost btn-sm" type="submit">OK</button>
+              </form>
+            </td>
+          </tr>
+        
+          <tr>
+            <td><a href="/account/orders/15/"><b>BR-2611-015</b></a></td>
+            <td>26.10.2026</td>
+            <td>Пётр Смирнов<br><span class="small muted">+7 (900) 100-20-15</span></td>
+            <td>Банкет</td>
+            <td>75</td>
+            <td>187900 ₽</td>
+            <td><span class="badge badge-neutral">Завершён</span></td>
+            <td>
+              <form class="status-form" action="/manager/orders/15/status/" method="post">
+                <input type="hidden" name="csrfmiddlewaretoken" value="2DPAbfUbHgSFQUnIFyQ5D9aTbXFzv0DEt3de4aq25xxOOMLz6mHxaPlvRv4NZBdj">
+                <label class="visually-hidden" for="status-15">Статус заказа BR-2611-015</label>
+                <select class="select select-sm" id="status-15" name="status">
+                  
+                    <option value="new">Новая</option>
+                  
+                    <option value="confirmed">Подтверждён</option>
+                  
+                    <option value="cooking">Готовится</option>
+                  
+                    <option value="done" selected="">Завершён</option>
+                  
+                    <option value="cancelled">Отменён</option>
+                  
+                </select>
+                <button class="btn btn-ghost btn-sm" type="submit">OK</button>
+              </form>
+            </td>
+          </tr>
+        
+          <tr>
+            <td><a href="/account/orders/22/"><b>BR-2611-022</b></a></td>
+            <td>23.11.2026</td>
+            <td>Иван Иванов<br><span class="small muted">+7 (900) 100-20-13</span></td>
+            <td>Фуршет</td>
+            <td>150</td>
+            <td>198350 ₽</td>
+            <td><span class="badge badge-warning">Новая</span></td>
+            <td>
+              <form class="status-form" action="/manager/orders/22/status/" method="post">
+                <input type="hidden" name="csrfmiddlewaretoken" value="2DPAbfUbHgSFQUnIFyQ5D9aTbXFzv0DEt3de4aq25xxOOMLz6mHxaPlvRv4NZBdj">
+                <label class="visually-hidden" for="status-22">Статус заказа BR-2611-022</label>
+                <select class="select select-sm" id="status-22" name="status">
+                  
+                    <option value="new" selected="">Новая</option>
+                  
+                    <option value="confirmed">Подтверждён</option>
+                  
+                    <option value="cooking">Готовится</option>
+                  
+                    <option value="done">Завершён</option>
+                  
+                    <option value="cancelled">Отменён</option>
+                  
+                </select>
+                <button class="btn btn-ghost btn-sm" type="submit">OK</button>
+              </form>
+            </td>
+          </tr>
+        
+          <tr>
+            <td><a href="/account/orders/9/"><b>BR-2611-009</b></a></td>
+            <td>02.10.2026</td>
+            <td>Пётр Смирнов<br><span class="small muted">+7 (900) 100-20-15</span></td>
+            <td>Фуршет</td>
+            <td>90</td>
+            <td>146600 ₽</td>
+            <td><span class="badge badge-error">Отменён</span></td>
+            <td>
+              <form class="status-form" action="/manager/orders/9/status/" method="post">
+                <input type="hidden" name="csrfmiddlewaretoken" value="2DPAbfUbHgSFQUnIFyQ5D9aTbXFzv0DEt3de4aq25xxOOMLz6mHxaPlvRv4NZBdj">
+                <label class="visually-hidden" for="status-9">Статус заказа BR-2611-009</label>
+                <select class="select select-sm" id="status-9" name="status">
+                  
+                    <option value="new">Новая</option>
+                  
+                    <option value="confirmed">Подтверждён</option>
+                  
+                    <option value="cooking">Готовится</option>
+                  
+                    <option value="done">Завершён</option>
+                  
+                    <option value="cancelled" selected="">Отменён</option>
+                  
+                </select>
+                <button class="btn btn-ghost btn-sm" type="submit">OK</button>
+              </form>
+            </td>
+          </tr>
+        
+          <tr>
+            <td><a href="/account/orders/21/"><b>BR-2611-021</b></a></td>
+            <td>19.11.2026</td>
+            <td>Пётр Смирнов<br><span class="small muted">+7 (900) 100-20-15</span></td>
+            <td>Фуршет</td>
+            <td>40</td>
+            <td>74460 ₽</td>
+            <td><span class="badge badge-neutral">Готовится</span></td>
+            <td>
+              <form class="status-form" action="/manager/orders/21/status/" method="post">
+                <input type="hidden" name="csrfmiddlewaretoken" value="2DPAbfUbHgSFQUnIFyQ5D9aTbXFzv0DEt3de4aq25xxOOMLz6mHxaPlvRv4NZBdj">
+                <label class="visually-hidden" for="status-21">Статус заказа BR-2611-021</label>
+                <select class="select select-sm" id="status-21" name="status">
+                  
+                    <option value="new">Новая</option>
+                  
+                    <option value="confirmed">Подтверждён</option>
+                  
+                    <option value="cooking" selected="">Готовится</option>
+                  
+                    <option value="done">Завершён</option>
+                  
+                    <option value="cancelled">Отменён</option>
+                  
+                </select>
+                <button class="btn btn-ghost btn-sm" type="submit">OK</button>
+              </form>
+            </td>
+          </tr>
+        
+          <tr>
+            <td><a href="/account/orders/5/"><b>BR-2611-005</b></a></td>
+            <td>15.12.2026</td>
+            <td>Анна Петрова<br><span class="small muted">+7 (900) 100-20-14</span></td>
+            <td>Фуршет</td>
+            <td>40</td>
+            <td>74460 ₽</td>
+            <td><span class="badge badge-success">Подтверждён</span></td>
+            <td>
+              <form class="status-form" action="/manager/orders/5/status/" method="post">
+                <input type="hidden" name="csrfmiddlewaretoken" value="2DPAbfUbHgSFQUnIFyQ5D9aTbXFzv0DEt3de4aq25xxOOMLz6mHxaPlvRv4NZBdj">
+                <label class="visually-hidden" for="status-5">Статус заказа BR-2611-005</label>
+                <select class="select select-sm" id="status-5" name="status">
+                  
+                    <option value="new">Новая</option>
+                  
+                    <option value="confirmed" selected="">Подтверждён</option>
+                  
+                    <option value="cooking">Готовится</option>
+                  
+                    <option value="done">Завершён</option>
+                  
+                    <option value="cancelled">Отменён</option>
+                  
+                </select>
+                <button class="btn btn-ghost btn-sm" type="submit">OK</button>
+              </form>
+            </td>
+          </tr>
+        
+          <tr>
+            <td><a href="/account/orders/11/"><b>BR-2611-011</b></a></td>
+            <td>10.10.2026</td>
+            <td>Анна Петрова<br><span class="small muted">+7 (900) 100-20-14</span></td>
+            <td>Банкет</td>
+            <td>60</td>
+            <td>127700 ₽</td>
+            <td><span class="badge badge-neutral">Завершён</span></td>
+            <td>
+              <form class="status-form" action="/manager/orders/11/status/" method="post">
+                <input type="hidden" name="csrfmiddlewaretoken" value="2DPAbfUbHgSFQUnIFyQ5D9aTbXFzv0DEt3de4aq25xxOOMLz6mHxaPlvRv4NZBdj">
+                <label class="visually-hidden" for="status-11">Статус заказа BR-2611-011</label>
+                <select class="select select-sm" id="status-11" name="status">
+                  
+                    <option value="new">Новая</option>
+                  
+                    <option value="confirmed">Подтверждён</option>
+                  
+                    <option value="cooking">Готовится</option>
+                  
+                    <option value="done" selected="">Завершён</option>
+                  
+                    <option value="cancelled">Отменён</option>
+                  
+                </select>
+                <button class="btn btn-ghost btn-sm" type="submit">OK</button>
+              </form>
+            </td>
+          </tr>
+        
+          <tr>
+            <td><a href="/account/orders/16/"><b>BR-2611-016</b></a></td>
+            <td>30.10.2026</td>
+            <td>Иван Иванов<br><span class="small muted">+7 (900) 100-20-13</span></td>
+            <td>Кофе-брейк</td>
+            <td>150</td>
+            <td>218375 ₽</td>
+            <td><span class="badge badge-neutral">Завершён</span></td>
+            <td>
+              <form class="status-form" action="/manager/orders/16/status/" method="post">
+                <input type="hidden" name="csrfmiddlewaretoken" value="2DPAbfUbHgSFQUnIFyQ5D9aTbXFzv0DEt3de4aq25xxOOMLz6mHxaPlvRv4NZBdj">
+                <label class="visually-hidden" for="status-16">Статус заказа BR-2611-016</label>
+                <select class="select select-sm" id="status-16" name="status">
+                  
+                    <option value="new">Новая</option>
+                  
+                    <option value="confirmed">Подтверждён</option>
+                  
+                    <option value="cooking">Готовится</option>
+                  
+                    <option value="done" selected="">Завершён</option>
+                  
+                    <option value="cancelled">Отменён</option>
+                  
+                </select>
+                <button class="btn btn-ghost btn-sm" type="submit">OK</button>
+              </form>
+            </td>
+          </tr>
+        
+          <tr>
+            <td><a href="/account/orders/17/"><b>BR-2611-017</b></a></td>
+            <td>03.11.2026</td>
+            <td>Анна Петрова<br><span class="small muted">+7 (900) 100-20-14</span></td>
+            <td>Фуршет</td>
+            <td>90</td>
+            <td>152810 ₽</td>
+            <td><span class="badge badge-neutral">Завершён</span></td>
+            <td>
+              <form class="status-form" action="/manager/orders/17/status/" method="post">
+                <input type="hidden" name="csrfmiddlewaretoken" value="2DPAbfUbHgSFQUnIFyQ5D9aTbXFzv0DEt3de4aq25xxOOMLz6mHxaPlvRv4NZBdj">
+                <label class="visually-hidden" for="status-17">Статус заказа BR-2611-017</label>
+                <select class="select select-sm" id="status-17" name="status">
+                  
+                    <option value="new">Новая</option>
+                  
+                    <option value="confirmed">Подтверждён</option>
+                  
+                    <option value="cooking">Готовится</option>
+                  
+                    <option value="done" selected="">Завершён</option>
+                  
+                    <option value="cancelled">Отменён</option>
+                  
+                </select>
+                <button class="btn btn-ghost btn-sm" type="submit">OK</button>
+              </form>
+            </td>
+          </tr>
+        
+          <tr>
+            <td><a href="/account/orders/30/"><b>BR-2611-030</b></a></td>
+            <td>25.12.2026</td>
+            <td>Пётр Смирнов<br><span class="small muted">+7 (900) 100-20-15</span></td>
+            <td>Фуршет</td>
+            <td>60</td>
+            <td>79100 ₽</td>
+            <td><span class="badge badge-success">Подтверждён</span></td>
+            <td>
+              <form class="status-form" action="/manager/orders/30/status/" method="post">
+                <input type="hidden" name="csrfmiddlewaretoken" value="2DPAbfUbHgSFQUnIFyQ5D9aTbXFzv0DEt3de4aq25xxOOMLz6mHxaPlvRv4NZBdj">
+                <label class="visually-hidden" for="status-30">Статус заказа BR-2611-030</label>
+                <select class="select select-sm" id="status-30" name="status">
+                  
+                    <option value="new">Новая</option>
+                  
+                    <option value="confirmed" selected="">Подтверждён</option>
+                  
+                    <option value="cooking">Готовится</option>
+                  
+                    <option value="done">Завершён</option>
+                  
+                    <option value="cancelled">Отменён</option>
+                  
+                </select>
+                <button class="btn btn-ghost btn-sm" type="submit">OK</button>
+              </form>
+            </td>
+          </tr>
+        
+          <tr>
+            <td><a href="/account/orders/2/"><b>BR-2611-002</b></a></td>
+            <td>20.10.2026</td>
+            <td>Иван Иванов<br><span class="small muted">+7 (900) 100-20-13</span></td>
+            <td>Фуршет</td>
+            <td>35</td>
+            <td>50815 ₽</td>
+            <td><span class="badge badge-neutral">Завершён</span></td>
+            <td>
+              <form class="status-form" action="/manager/orders/2/status/" method="post">
+                <input type="hidden" name="csrfmiddlewaretoken" value="2DPAbfUbHgSFQUnIFyQ5D9aTbXFzv0DEt3de4aq25xxOOMLz6mHxaPlvRv4NZBdj">
+                <label class="visually-hidden" for="status-2">Статус заказа BR-2611-002</label>
+                <select class="select select-sm" id="status-2" name="status">
+                  
+                    <option value="new">Новая</option>
+                  
+                    <option value="confirmed">Подтверждён</option>
+                  
+                    <option value="cooking">Готовится</option>
+                  
+                    <option value="done" selected="">Завершён</option>
+                  
+                    <option value="cancelled">Отменён</option>
+                  
+                </select>
+                <button class="btn btn-ghost btn-sm" type="submit">OK</button>
+              </form>
+            </td>
+          </tr>
+        
+          <tr>
+            <td><a href="/account/orders/1/"><b>BR-2611-001</b></a></td>
+            <td>10.12.2026</td>
+            <td>Иван Иванов<br><span class="small muted">+7 (900) 100-20-13</span></td>
+            <td>Фуршет</td>
+            <td>40</td>
+            <td>78600 ₽</td>
+            <td><span class="badge badge-success">Подтверждён</span></td>
+            <td>
+              <form class="status-form" action="/manager/orders/1/status/" method="post">
+                <input type="hidden" name="csrfmiddlewaretoken" value="2DPAbfUbHgSFQUnIFyQ5D9aTbXFzv0DEt3de4aq25xxOOMLz6mHxaPlvRv4NZBdj">
+                <label class="visually-hidden" for="status-1">Статус заказа BR-2611-001</label>
+                <select class="select select-sm" id="status-1" name="status">
+                  
+                    <option value="new">Новая</option>
+                  
+                    <option value="confirmed" selected="">Подтверждён</option>
+                  
+                    <option value="cooking">Готовится</option>
+                  
+                    <option value="done">Завершён</option>
+                  
+                    <option value="cancelled">Отменён</option>
+                  
+                </select>
+                <button class="btn btn-ghost btn-sm" type="submit">OK</button>
+              </form>
+            </td>
+          </tr>
+        
+          <tr>
+            <td><a href="/account/orders/7/"><b>BR-2611-007</b></a></td>
+            <td>24.09.2026</td>
+            <td>Иван Иванов<br><span class="small muted">+7 (900) 100-20-13</span></td>
+            <td>Банкет</td>
+            <td>50</td>
+            <td>113200 ₽</td>
+            <td><span class="badge badge-neutral">Завершён</span></td>
+            <td>
+              <form class="status-form" action="/manager/orders/7/status/" method="post">
+                <input type="hidden" name="csrfmiddlewaretoken" value="2DPAbfUbHgSFQUnIFyQ5D9aTbXFzv0DEt3de4aq25xxOOMLz6mHxaPlvRv4NZBdj">
+                <label class="visually-hidden" for="status-7">Статус заказа BR-2611-007</label>
+                <select class="select select-sm" id="status-7" name="status">
+                  
+                    <option value="new">Новая</option>
+                  
+                    <option value="confirmed">Подтверждён</option>
+                  
+                    <option value="cooking">Готовится</option>
+                  
+                    <option value="done" selected="">Завершён</option>
+                  
+                    <option value="cancelled">Отменён</option>
+                  
+                </select>
+                <button class="btn btn-ghost btn-sm" type="submit">OK</button>
+              </form>
+            </td>
+          </tr>
+        
+          <tr>
+            <td><a href="/account/orders/3/"><b>BR-2611-003</b></a></td>
+            <td>01.12.2026</td>
+            <td>Иван Иванов<br><span class="small muted">+7 (900) 100-20-13</span></td>
+            <td>Банкет</td>
+            <td>60</td>
+            <td>127700 ₽</td>
+            <td><span class="badge badge-warning">Новая</span></td>
+            <td>
+              <form class="status-form" action="/manager/orders/3/status/" method="post">
+                <input type="hidden" name="csrfmiddlewaretoken" value="2DPAbfUbHgSFQUnIFyQ5D9aTbXFzv0DEt3de4aq25xxOOMLz6mHxaPlvRv4NZBdj">
+                <label class="visually-hidden" for="status-3">Статус заказа BR-2611-003</label>
+                <select class="select select-sm" id="status-3" name="status">
+                  
+                    <option value="new" selected="">Новая</option>
+                  
+                    <option value="confirmed">Подтверждён</option>
+                  
+                    <option value="cooking">Готовится</option>
+                  
+                    <option value="done">Завершён</option>
+                  
+                    <option value="cancelled">Отменён</option>
+                  
+                </select>
+                <button class="btn btn-ghost btn-sm" type="submit">OK</button>
+              </form>
+            </td>
+          </tr>
+        
+          <tr>
+            <td><a href="/account/orders/23/"><b>BR-2611-023</b></a></td>
+            <td>27.11.2026</td>
+            <td>Анна Петрова<br><span class="small muted">+7 (900) 100-20-14</span></td>
+            <td>Банкет</td>
+            <td>20</td>
+            <td>50600 ₽</td>
+            <td><span class="badge badge-success">Подтверждён</span></td>
+            <td>
+              <form class="status-form" action="/manager/orders/23/status/" method="post">
+                <input type="hidden" name="csrfmiddlewaretoken" value="2DPAbfUbHgSFQUnIFyQ5D9aTbXFzv0DEt3de4aq25xxOOMLz6mHxaPlvRv4NZBdj">
+                <label class="visually-hidden" for="status-23">Статус заказа BR-2611-023</label>
+                <select class="select select-sm" id="status-23" name="status">
+                  
+                    <option value="new">Новая</option>
+                  
+                    <option value="confirmed" selected="">Подтверждён</option>
+                  
+                    <option value="cooking">Готовится</option>
+                  
+                    <option value="done">Завершён</option>
+                  
+                    <option value="cancelled">Отменён</option>
+                  
+                </select>
+                <button class="btn btn-ghost btn-sm" type="submit">OK</button>
+              </form>
+            </td>
+          </tr>
+        
+          <tr>
+            <td><a href="/account/orders/18/"><b>BR-2611-018</b></a></td>
+            <td>07.11.2026</td>
+            <td>Пётр Смирнов<br><span class="small muted">+7 (900) 100-20-15</span></td>
+            <td>Фуршет</td>
+            <td>75</td>
+            <td>107575 ₽</td>
+            <td><span class="badge badge-error">Отменён</span></td>
+            <td>
+              <form class="status-form" action="/manager/orders/18/status/" method="post">
+                <input type="hidden" name="csrfmiddlewaretoken" value="2DPAbfUbHgSFQUnIFyQ5D9aTbXFzv0DEt3de4aq25xxOOMLz6mHxaPlvRv4NZBdj">
+                <label class="visually-hidden" for="status-18">Статус заказа BR-2611-018</label>
+                <select class="select select-sm" id="status-18" name="status">
+                  
+                    <option value="new">Новая</option>
+                  
+                    <option value="confirmed">Подтверждён</option>
+                  
+                    <option value="cooking">Готовится</option>
+                  
+                    <option value="done">Завершён</option>
+                  
+                    <option value="cancelled" selected="">Отменён</option>
+                  
+                </select>
+                <button class="btn btn-ghost btn-sm" type="submit">OK</button>
+              </form>
+            </td>
+          </tr>
+        
+          <tr>
+            <td><a href="/account/orders/10/"><b>BR-2611-010</b></a></td>
+            <td>06.10.2026</td>
+            <td>Иван Иванов<br><span class="small muted">+7 (900) 100-20-13</span></td>
+            <td>Фуршет</td>
+            <td>150</td>
+            <td>198350 ₽</td>
+            <td><span class="badge badge-neutral">Завершён</span></td>
+            <td>
+              <form class="status-form" action="/manager/orders/10/status/" method="post">
+                <input type="hidden" name="csrfmiddlewaretoken" value="2DPAbfUbHgSFQUnIFyQ5D9aTbXFzv0DEt3de4aq25xxOOMLz6mHxaPlvRv4NZBdj">
+                <label class="visually-hidden" for="status-10">Статус заказа BR-2611-010</label>
+                <select class="select select-sm" id="status-10" name="status">
+                  
+                    <option value="new">Новая</option>
+                  
+                    <option value="confirmed">Подтверждён</option>
+                  
+                    <option value="cooking">Готовится</option>
+                  
+                    <option value="done" selected="">Завершён</option>
+                  
+                    <option value="cancelled">Отменён</option>
+                  
+                </select>
+                <button class="btn btn-ghost btn-sm" type="submit">OK</button>
+              </form>
+            </td>
+          </tr>
+        
+          <tr>
+            <td><a href="/account/orders/36/"><b>BR-2611-036</b></a></td>
+            <td>18.01.2027</td>
+            <td>Пётр Смирнов<br><span class="small muted">+7 (900) 100-20-15</span></td>
+            <td>Кофе-брейк</td>
+            <td>60</td>
+            <td>82700 ₽</td>
+            <td><span class="badge badge-success">Подтверждён</span></td>
+            <td>
+              <form class="status-form" action="/manager/orders/36/status/" method="post">
+                <input type="hidden" name="csrfmiddlewaretoken" value="2DPAbfUbHgSFQUnIFyQ5D9aTbXFzv0DEt3de4aq25xxOOMLz6mHxaPlvRv4NZBdj">
+                <label class="visually-hidden" for="status-36">Статус заказа BR-2611-036</label>
+                <select class="select select-sm" id="status-36" name="status">
+                  
+                    <option value="new">Новая</option>
+                  
+                    <option value="confirmed" selected="">Подтверждён</option>
+                  
+                    <option value="cooking">Готовится</option>
+                  
+                    <option value="done">Завершён</option>
+                  
+                    <option value="cancelled">Отменён</option>
+                  
+                </select>
+                <button class="btn btn-ghost btn-sm" type="submit">OK</button>
+              </form>
+            </td>
+          </tr>
+        
+          <tr>
+            <td><a href="/account/orders/14/"><b>BR-2611-014</b></a></td>
+            <td>22.10.2026</td>
+            <td>Анна Петрова<br><span class="small muted">+7 (900) 100-20-14</span></td>
+            <td>Фуршет</td>
+            <td>30</td>
+            <td>41670 ₽</td>
+            <td><span class="badge badge-error">Отменён</span></td>
+            <td>
+              <form class="status-form" action="/manager/orders/14/status/" method="post">
+                <input type="hidden" name="csrfmiddlewaretoken" value="2DPAbfUbHgSFQUnIFyQ5D9aTbXFzv0DEt3de4aq25xxOOMLz6mHxaPlvRv4NZBdj">
+                <label class="visually-hidden" for="status-14">Статус заказа BR-2611-014</label>
+                <select class="select select-sm" id="status-14" name="status">
+                  
+                    <option value="new">Новая</option>
+                  
+                    <option value="confirmed">Подтверждён</option>
+                  
+                    <option value="cooking">Готовится</option>
+                  
+                    <option value="done">Завершён</option>
+                  
+                    <option value="cancelled" selected="">Отменён</option>
+                  
+                </select>
+                <button class="btn btn-ghost btn-sm" type="submit">OK</button>
+              </form>
+            </td>
+          </tr>
+        
+          <tr>
+            <td><a href="/account/orders/35/"><b>BR-2611-035</b></a></td>
+            <td>14.01.2027</td>
+            <td>Анна Петрова<br><span class="small muted">+7 (900) 100-20-14</span></td>
+            <td>Банкет</td>
+            <td>120</td>
+            <td>263600 ₽</td>
+            <td><span class="badge badge-success">Подтверждён</span></td>
+            <td>
+              <form class="status-form" action="/manager/orders/35/status/" method="post">
+                <input type="hidden" name="csrfmiddlewaretoken" value="2DPAbfUbHgSFQUnIFyQ5D9aTbXFzv0DEt3de4aq25xxOOMLz6mHxaPlvRv4NZBdj">
+                <label class="visually-hidden" for="status-35">Статус заказа BR-2611-035</label>
+                <select class="select select-sm" id="status-35" name="status">
+                  
+                    <option value="new">Новая</option>
+                  
+                    <option value="confirmed" selected="">Подтверждён</option>
+                  
+                    <option value="cooking">Готовится</option>
+                  
+                    <option value="done">Завершён</option>
+                  
+                    <option value="cancelled">Отменён</option>
+                  
+                </select>
+                <button class="btn btn-ghost btn-sm" type="submit">OK</button>
+              </form>
+            </td>
+          </tr>
+        
+      </tbody>
+    </table>
+  </div>
+
+  
+    <nav class="pagination" aria-label="Страницы заказов">
+      
+        <span class="page-link is-disabled">←</span>
+      
+      
+        
+          <span class="page-link active" aria-current="page">1</span>
+        
+      
+        
+          <a class="page-link" href="?page=2">2</a>
+        
+      
+      
+        <a class="page-link" href="?page=2" rel="next">→</a>
+      
+    </nav>
+  
+</div>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-main">
+    <div class="footer-brand">
+      <b>Банкетные решения</b>
+      <p>Ульяновск, ул. Гончарова, 1</p>
+      <a href="tel:+78422000000">+7 (8422) 00-00-00</a>
+      <a href="mailto:hello@banket.example">hello@banket.example</a>
+    </div>
+    <div class="footer-col">
+      <h3>Разделы</h3>
+      <a href="/catalog/">Каталог блюд</a>
+      <a href="/calculator/">Калькулятор</a>
+      <a href="/checkout/">Оформить заказ</a>
+      <a href="/contacts/">Контакты</a>
+    </div>
+    <div class="footer-col">
+      <h3>Кабинет</h3>
+      
+        <a href="/account/">Мои заказы</a>
+        <a href="/password/">Смена пароля</a>
+      
+    </div>
+  </div>
+  <div class="footer-bottom">© 2026 Банкетные решения. Учебный проект, вариант 16.</div>
+</footer>
+<div class="toast" id="toast" role="status" aria-live="polite">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 12 5 5 11-11"></path></svg><span></span>
+</div>
+<script src="/static/js/app.js"></script>
+
+
+
+</body></html>

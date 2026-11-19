@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}Страница не найдена — Банкетные решения{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="empty-state">
+    <div class="eyebrow">Ошибка 404</div>
+    <h1>Страница не найдена</h1>
+    <p>Возможно, адрес устарел или позиция меню была удалена. Откройте каталог или начните с главной.</p>
+    <div class="action-row">
+      <a class="btn btn-primary" href="{% url 'main:catalog' %}">Открыть каталог</a>
+      <a class="btn btn-outline" href="{% url 'main:index' %}">На главную</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

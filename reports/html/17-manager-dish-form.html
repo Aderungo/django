@@ -1,0 +1,200 @@
+<!DOCTYPE html><html lang="ru"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Редактирование блюда — панель менеджера</title>
+  <meta name="description" content="Кейтеринг и выездные банкеты: меню, калькулятор выхода еды и сметы, оформление заказа.">
+  <link rel="stylesheet" href="/static/css/style.css">
+  <link rel="icon" href="/static/img/favicon.svg" type="image/svg+xml">
+</head>
+<body>
+<a class="skip-link" href="#main">Перейти к содержанию</a>
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="logo" href="/" aria-label="Банкетные решения — на главную">
+      <span class="logo-mark">
+        <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 25h28"></path><path d="M9 25c0-6.6 4.9-11 11-11s11 4.4 11 11"></path><path d="M20 14v-3"></path><circle cx="20" cy="9" r="1.6"></circle><path d="M6 29h28"></path><path d="M12 25v4M28 25v4"></path></svg>
+      </span>
+      <span class="logo-text"><b>Банкетные решения</b><small>выездной кейтеринг · Ульяновск</small></span>
+    </a>
+    <nav class="main-nav" aria-label="Основная навигация">
+      <a href="/catalog/">Каталог блюд</a>
+      <a href="/calculator/">Калькулятор</a>
+      <a href="/checkout/">Оформить заказ</a>
+      <a href="/contacts/">Контакты</a>
+    </nav>
+    <div class="header-actions">
+      
+        
+          <a class="btn btn-outline btn-sm" href="/manager/">Панель менеджера</a>
+        
+        <a class="btn btn-outline btn-sm" href="/account/">Личный кабинет</a>
+        <form class="logout-form" action="/logout/" method="post">
+          <input type="hidden" name="csrfmiddlewaretoken" value="YzR2eAwFwidE4KBlx2oClZx46uiNadLHpZfG7v2wUzSN2CZcYQf4SFIGM2H1EOlm">
+          <button class="btn btn-primary btn-sm" type="submit">Выйти</button>
+        </form>
+      
+      <button class="burger" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="mobile-menu"><span></span></button>
+    </div>
+  </div>
+  <div class="mobile-menu" id="mobile-menu">
+    <div class="container">
+      <nav aria-label="Мобильная навигация">
+        <a href="/catalog/">Каталог блюд</a>
+        <a href="/calculator/">Калькулятор</a>
+        <a href="/checkout/">Оформить заказ</a>
+        <a href="/contacts/">Контакты</a>
+        
+          <a href="/account/">Личный кабинет</a>
+          <a href="/manager/">Панель менеджера</a>
+        
+      </nav>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+  
+</div>
+
+<main id="main">
+
+<div class="container">
+  <nav class="breadcrumbs" aria-label="Хлебные крошки">
+    <a href="/">Главная</a><span>›</span>
+    <a href="/manager/">Панель менеджера</a><span>›</span>
+    <span aria-current="page">Редактирование блюда</span>
+  </nav>
+  <div class="page-head">
+    <h1>Редактирование блюда</h1>
+    <p>Поля проверяются на сервере. Фото принимается только PNG, JPG или WEBP размером до 5 МБ.</p>
+  </div>
+
+  <form class="card card-narrow" action="/manager/dishes/3/edit/" method="post" enctype="multipart/form-data" novalidate="">
+    <input type="hidden" name="csrfmiddlewaretoken" value="YzR2eAwFwidE4KBlx2oClZx46uiNadLHpZfG7v2wUzSN2CZcYQf4SFIGM2H1EOlm">
+    
+    <div class="form-grid">
+      <div class="field">
+        <label for="id_name">Название</label>
+        <input type="text" name="name" value="Салат «Греческий»" maxlength="120" class="input" required="" id="id_name">
+        
+      </div>
+      <div class="field">
+        <label for="id_category">Категория</label>
+        <select name="category" class="select" required="" id="id_category">
+  <option value="">- Select an option -</option>
+
+  <option value="1" selected="">Салаты</option>
+
+  <option value="2">Закуски</option>
+
+  <option value="3">Горячее</option>
+
+  <option value="4">Фуршет</option>
+
+  <option value="5">Десерты</option>
+
+  <option value="6">Напитки</option>
+
+  <option value="7">Оформление</option>
+
+  <option value="8">Аренда</option>
+
+  <option value="9">Персонал</option>
+
+</select>
+        
+      </div>
+      <div class="field">
+        <label for="id_price">Цена, ₽</label>
+        <input type="number" name="price" value="290.00" min="0" step="0.01" class="input" required="" id="id_price">
+        
+      </div>
+      <div class="field">
+        <label for="id_unit">Единица</label>
+        <select name="unit" class="select" id="id_unit">
+  <option value="portion" selected="">порция</option>
+
+  <option value="guest">гость</option>
+
+  <option value="item">шт.</option>
+
+</select>
+        
+      </div>
+      <div class="field">
+        <label for="id_output_grams">Выход, г</label>
+        <input type="number" name="output_grams" value="170" min="0" max="5000" class="input" required="" id="id_output_grams">
+        
+      </div>
+      <div class="field">
+        <label for="id_image">Фото</label>
+        На данный момент: <a href="/media/dishes/greek-salad.jpg">dishes/greek-salad.jpg</a>
+<input type="checkbox" name="image-clear" id="image-clear_id">
+<label for="image-clear_id">Очистить</label><br>
+Изменить:
+<input type="file" name="image" accept=".png,.jpg,.jpeg,.webp" class="file-input" aria-describedby="id_image_helptext" id="id_image">
+        <span class="field-hint">PNG, JPG или WEBP, не больше 5 МБ.</span>
+        
+      </div>
+      <div class="field full">
+        <label for="id_composition">Состав</label>
+        <input type="text" name="composition" value="Огурец, томат, перец, фета, оливки" maxlength="250" class="input" id="id_composition">
+        
+      </div>
+      <div class="field full">
+        <label for="id_description">Описание</label>
+        <textarea name="description" cols="40" rows="3" class="textarea" id="id_description">Овощи, фета и оливки с орегано.</textarea>
+        
+      </div>
+    </div>
+
+    <div class="checkbox-row">
+      <label class="checkbox" for="id_is_active"><input type="checkbox" name="is_active" class="checkbox-input" id="id_is_active" checked=""><span>Доступно в каталоге</span></label>
+      <label class="checkbox" for="id_is_popular"><input type="checkbox" name="is_popular" class="checkbox-input" id="id_is_popular"><span>Популярное</span></label>
+    </div>
+
+    <div class="form-actions">
+      <button class="btn btn-primary" type="submit">Сохранить</button>
+      <a class="btn btn-ghost" href="/catalog/">Отмена</a>
+      
+        <a class="btn btn-ghost" href="/manager/dishes/3/delete/">Удалить</a>
+      
+    </div>
+  </form>
+</div>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-main">
+    <div class="footer-brand">
+      <b>Банкетные решения</b>
+      <p>Ульяновск, ул. Гончарова, 1</p>
+      <a href="tel:+78422000000">+7 (8422) 00-00-00</a>
+      <a href="mailto:hello@banket.example">hello@banket.example</a>
+    </div>
+    <div class="footer-col">
+      <h3>Разделы</h3>
+      <a href="/catalog/">Каталог блюд</a>
+      <a href="/calculator/">Калькулятор</a>
+      <a href="/checkout/">Оформить заказ</a>
+      <a href="/contacts/">Контакты</a>
+    </div>
+    <div class="footer-col">
+      <h3>Кабинет</h3>
+      
+        <a href="/account/">Мои заказы</a>
+        <a href="/password/">Смена пароля</a>
+      
+    </div>
+  </div>
+  <div class="footer-bottom">© 2026 Банкетные решения. Учебный проект, вариант 16.</div>
+</footer>
+<div class="toast" id="toast" role="status" aria-live="polite">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 12 5 5 11-11"></path></svg><span></span>
+</div>
+<script src="/static/js/app.js"></script>
+
+
+
+</body></html>

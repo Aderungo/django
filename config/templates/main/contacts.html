@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% block title %}Контакты — Банкетные решения{% endblock %}
+{% block description %}Контакты службы кейтеринга: адрес, телефон, e-mail и форма вопроса.{% endblock %}
+
+{% block content %}
+<div class="container">
+  <nav class="breadcrumbs" aria-label="Хлебные крошки">
+    <a href="{% url 'main:index' %}">Главная</a><span>›</span><span aria-current="page">Контакты</span>
+  </nav>
+  <div class="page-head">
+    <h1>Контакты</h1>
+    <p>Ответим на вопросы по меню, датам и оформлению. Если вы уже оставили заявку, менеджер свяжется сам.</p>
+  </div>
+
+  <div class="contact-grid">
+    <article class="contact-card">
+      <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg></div>
+      <b>Адрес</b><span>Ульяновск, ул. Гончарова, 1</span>
+    </article>
+    <article class="contact-card">
+      <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h4l2 5-2.5 1.5a12 12 0 0 0 6 6L15 14l5 2v4a2 2 0 0 1-2 2A17 17 0 0 1 2 6a2 2 0 0 1 2-2Z"/></svg></div>
+      <b>Телефон</b><a href="tel:+78422000000">+7 (8422) 00-00-00</a>
+    </article>
+    <article class="contact-card">
+      <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></div>
+      <b>E-mail</b><a href="mailto:hello@banket.example">hello@banket.example</a>
+    </article>
+    <article class="contact-card">
+      <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
+      <b>Часы работы</b><span>Пн–Вс, 09:00–21:00</span>
+    </article>
+  </div>
+
+  <div class="split wide-left contact-split">
+    <div class="map" role="img" aria-label="Схема проезда: Ульяновск, ул. Гончарова, 1">
+      <div class="map-pin">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>
+      </div>
+      <div class="map-label">Банкетные решения · Гончарова, 1</div>
+      <div class="map-caption">Схема проезда · 5 минут от площади Ленина</div>
+    </div>
+
+    <form class="card" id="contact-form" action="{% url 'main:contacts' %}" method="post" novalidate>
+      {% csrf_token %}
+      <h2 class="card-title">Напишите нам</h2>
+      <div class="form-grid">
+        <div class="field{% if form.name.errors %} invalid{% endif %}">
+          <label for="{{ form.name.id_for_label }}">Имя</label>
+          {{ form.name }}
+          {% if form.name.errors %}<span class="field-error">{{ form.name.errors.0 }}</span>{% endif %}
+        </div>
+        <div class="field{% if form.email.errors %} invalid{% endif %}">
+          <label for="{{ form.email.id_for_label }}">E-mail</label>
+          {{ form.email }}
+          {% if form.email.errors %}<span class="field-error">{{ form.email.errors.0 }}</span>{% endif %}
+        </div>
+        <div class="field full{% if form.phone.errors %} invalid{% endif %}">
+          <label for="{{ form.phone.id_for_label }}">Телефон (необязательно)</label>
+          {{ form.phone }}
+          {% if form.phone.errors %}<span class="field-error">{{ form.phone.errors.0 }}</span>{% endif %}
+        </div>
+        <div class="field full{% if form.message.errors %} invalid{% endif %}">
+          <label for="{{ form.message.id_for_label }}">Сообщение</label>
+          {{ form.message }}
+          {% if form.message.errors %}<span class="field-error">{{ form.message.errors.0 }}</span>{% else %}<span class="field-hint">Хотя бы 15 символов: дата, число гостей, формат</span>{% endif %}
+        </div>
+      </div>
+      <label class="checkbox" for="{{ form.consent.id_for_label }}">
+        {{ form.consent }}
+        <span>Согласен на обработку персональных данных</span>
+      </label>
+      {% if form.consent.errors %}<span class="field-error">{{ form.consent.errors.0 }}</span>{% endif %}
+      <div class="form-actions">
+        <button class="btn btn-primary" type="submit">Отправить</button>
+        <span class="small muted">Ответим в течение рабочего дня.</span>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}Удаление блюда — панель менеджера{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="page-head">
+    <h1>Удалить блюдо?</h1>
+    <p>Действие необратимо. Если блюдо входит в заказы, удаление будет заблокировано — сначала снимите его с продажи.</p>
+  </div>
+  <div class="card card-narrow">
+    <dl class="kv">
+      <dt>Название</dt><dd>{{ dish.name }}</dd>
+      <dt>Категория</dt><dd>{{ dish.category.name }}</dd>
+      <dt>Цена</dt><dd>{{ dish.price|floatformat:0 }} ₽</dd>
+    </dl>
+    <form action="{% url 'main:dish_delete' dish.pk %}" method="post">
+      {% csrf_token %}
+      <div class="form-actions">
+        <button class="btn btn-primary" type="submit">Удалить</button>
+        <a class="btn btn-ghost" href="{% url 'main:dish_detail' dish.slug %}">Отмена</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

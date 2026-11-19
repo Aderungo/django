@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}Доступ запрещён — Банкетные решения{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="empty-state">
+    <div class="eyebrow">Ошибка 403</div>
+    <h1>Доступ к этой странице запрещён</h1>
+    <p>Заказ или раздел принадлежит другому пользователю. Войдите под нужным аккаунтом или вернитесь в свой кабинет.</p>
+    <div class="action-row">
+      <a class="btn btn-primary" href="{% url 'main:account' %}">Личный кабинет</a>
+      <a class="btn btn-outline" href="{% url 'main:index' %}">На главную</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

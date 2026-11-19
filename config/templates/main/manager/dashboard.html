@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% block title %}Панель менеджера — Банкетные решения{% endblock %}
+
+{% block content %}
+<div class="container">
+  <nav class="breadcrumbs" aria-label="Хлебные крошки">
+    <a href="{% url 'main:index' %}">Главная</a><span>›</span><span aria-current="page">Панель менеджера</span>
+  </nav>
+  <div class="page-head">
+    <h1>Панель банкетного менеджера</h1>
+    <p>Сводные показатели считаются агрегатными запросами ORM: количество, сумма, средний чек и доля подтверждённых заказов.</p>
+  </div>
+
+  <div class="stats stats-wide">
+    <div class="stat"><span>Заказов (без отменённых)</span><b>{{ stats.orders_count }}</b></div>
+    <div class="stat"><span>Выручка</span><b>{{ stats.revenue|floatformat:0 }} ₽</b></div>
+    <div class="stat"><span>Средний чек</span><b>{{ stats.avg_check|floatformat:0 }} ₽</b></div>
+    <div class="stat"><span>Гостей обслужено</span><b>{{ stats.guests }}</b></div>
+    <div class="stat"><span>Доля подтверждённых</span><b>{{ stats.confirmed_share }} %</b></div>
+  </div>
+
+  <div class="dashboard-grid">
+    <section class="card" aria-labelledby="chart-title">
+      <h2 class="card-title" id="chart-title">Заказы по форматам</h2>
+      {% if stats.chart %}
+        <svg class="chart" viewBox="0 0 360 210" role="img" aria-labelledby="chart-desc">
+          <title id="chart-desc">Столбчатая диаграмма количества заказов по форматам мероприятий</title>
+          <line x1="20" y1="180" x2="340" y2="180" stroke="#D4C0AD" stroke-width="1"/>
+          {% for bar in stats.chart %}
+            <rect x="{{ bar.x }}" y="{{ bar.y }}" width="60" height="{{ bar.h }}" rx="4" fill="#B23E22"></rect>
+            <text x="{{ bar.label_x }}" y="{{ bar.y|add:'-6' }}" text-anchor="middle" font-size="12" fill="#231F1C">{{ bar.count }}</text>
+            <text x="{{ bar.label_x }}" y="197" text-anchor="middle" font-size="10" fill="#6B615A">{{ bar.label }}</text>
+          {% endfor %}
+        </svg>
+      {% else %}
+        <p class="muted">Данных для диаграммы пока нет.</p>
+      {% endif %}
+      <div class="chart-legend">
+        {% for bar in stats.chart %}
+          <div class="sum-row"><span>{{ bar.label }}</span><span>{{ bar.count }} заказ(ов) · {{ bar.revenue|floatformat:0 }} ₽</span></div>
+        {% endfor %}
+      </div>
+    </section>
+
+    <section class="card" aria-labelledby="kitchen-title">
+      <h2 class="card-title" id="kitchen-title">Загрузка кухни</h2>
+      <div class="table-wrap">
+        <table class="data">
+          <caption class="visually-hidden">Загрузка кухни по ближайшим датам</caption>
+          <thead><tr><th scope="col">Дата</th><th scope="col">Занято</th><th scope="col">Свободно</th><th scope="col">Загрузка</th></tr></thead>
+          <tbody>
+            {% for day in kitchen %}
+              <tr>
+                <td>{{ day.date|date:"d.m" }}</td>
+                <td>{{ day.booked_guests }} / {{ day.capacity_guests }}</td>
+                <td>{{ day.free_guests }}</td>
+                <td>
+                  {% if day.is_closed %}<span class="badge badge-error">закрыто</span>
+                  {% elif day.load_percent >= 90 %}<span class="badge badge-warning">{{ day.load_percent }} %</span>
+                  {% else %}<span class="badge badge-success">{{ day.load_percent }} %</span>{% endif %}
+                </td>
+              </tr>
+            {% empty %}
+              <tr><td colspan="4">Календарь кухни не заполнен.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+
+  <section class="card card-spaced" aria-labelledby="recent-title">
+    <div class="section-head section-head-tight">
+      <h2 class="card-title" id="recent-title">Последние заказы</h2>
+      <div class="section-actions">
+        <a class="btn btn-outline btn-sm" href="{% url 'main:manager_orders' %}">Все заказы</a>
+        <a class="btn btn-ghost btn-sm" href="{% url 'main:manager_orders_csv' %}">Экспорт CSV</a>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table class="data">
+        <caption class="visually-hidden">Последние заказы</caption>
+        <thead>
+          <tr><th scope="col">Заявка</th><th scope="col">Дата</th><th scope="col">Заказчик</th><th scope="col">Формат</th><th scope="col">Гостей</th><th scope="col">Сумма</th><th scope="col">Статус</th></tr>
+        </thead>
+        <tbody>
+          {% for order in recent %}
+            <tr>
+              <td><a href="{% url 'main:order_detail' order.pk %}"><b>{{ order.number }}</b></a></td>
+              <td>{{ order.event_date|date:"d.m.Y" }}</td>
+              <td>{{ order.contact_name }}</td>
+              <td>{{ order.event_format.name }}</td>
+              <td>{{ order.guests }}</td>
+              <td>{{ order.total|floatformat:0 }} ₽</td>
+              <td><span class="badge {{ order.status_css }}">{{ order.get_status_display }}</span></td>
+            </tr>
+          {% empty %}
+            <tr><td colspan="7">Заказов пока нет.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>
+{% endblock %}

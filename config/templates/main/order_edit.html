@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block title %}Изменение заказа {{ order.number }} — Банкетные решения{% endblock %}
+
+{% block content %}
+<div class="container">
+  <nav class="breadcrumbs" aria-label="Хлебные крошки">
+    <a href="{% url 'main:index' %}">Главная</a><span>›</span>
+    <a href="{% url 'main:account' %}">Личный кабинет</a><span>›</span>
+    <a href="{% url 'main:order_detail' order.pk %}">Заказ {{ order.number }}</a><span>›</span>
+    <span aria-current="page">Изменение</span>
+  </nav>
+
+  <div class="page-head">
+    <h1>Изменение заказа {{ order.number }}</h1>
+    <p>После сохранения сервер пересчитает смету, выход еды, состав смен и скорректирует загрузку кухни в одной транзакции.</p>
+  </div>
+
+  <form class="card card-narrow" action="{% url 'main:order_edit' order.pk %}" method="post" enctype="multipart/form-data" novalidate>
+    {% csrf_token %}
+    {% if form.non_field_errors %}
+      <div class="notice notice-error"><div>{{ form.non_field_errors.0 }}</div></div>
+    {% endif %}
+    <div class="form-grid">
+      <div class="field{% if form.event_date.errors %} invalid{% endif %}">
+        <label for="{{ form.event_date.id_for_label }}">Дата мероприятия</label>
+        {{ form.event_date }}
+        {% if form.event_date.errors %}<span class="field-error">{{ form.event_date.errors.0 }}</span>{% endif %}
+      </div>
+      <div class="field{% if form.guests.errors %} invalid{% endif %}">
+        <label for="{{ form.guests.id_for_label }}">Гостей</label>
+        {{ form.guests }}
+        {% if form.guests.errors %}<span class="field-error">{{ form.guests.errors.0 }}</span>{% endif %}
+      </div>
+      <div class="field full{% if form.address.errors %} invalid{% endif %}">
+        <label for="{{ form.address.id_for_label }}">Адрес</label>
+        {{ form.address }}
+        {% if form.address.errors %}<span class="field-error">{{ form.address.errors.0 }}</span>{% endif %}
+      </div>
+      <div class="field full{% if form.comment.errors %} invalid{% endif %}">
+        <label for="{{ form.comment.id_for_label }}">Комментарий</label>
+        {{ form.comment }}
+        {% if form.comment.errors %}<span class="field-error">{{ form.comment.errors.0 }}</span>{% endif %}
+      </div>
+      <div class="field full{% if form.sketch.errors %} invalid{% endif %}">
+        <label for="{{ form.sketch.id_for_label }}">Новый эскиз (необязательно)</label>
+        {{ form.sketch }}
+        {% if form.sketch.errors %}<span class="field-error">{{ form.sketch.errors.0 }}</span>{% endif %}
+      </div>
+    </div>
+    <div class="form-actions">
+      <button class="btn btn-primary" type="submit">Сохранить изменения</button>
+      <a class="btn btn-ghost" href="{% url 'main:order_detail' order.pk %}">Отмена</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

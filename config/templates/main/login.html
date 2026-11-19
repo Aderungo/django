@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block title %}Вход — Банкетные решения{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="auth-wrap">
+    <aside class="auth-aside">
+      <div>
+        <div class="eyebrow">Личный кабинет</div>
+        <h2>Заказ, дата и состав — под вашим контролем</h2>
+        <p>Войдите, чтобы изменить дату мероприятия, посмотреть смету и следить за статусом заявки. Данные сохраняются на сервере.</p>
+      </div>
+      <div class="auth-art">
+        <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 25h28"/><path d="M9 25c0-6.6 4.9-11 11-11s11 4.4 11 11"/><path d="M20 14v-3"/><circle cx="20" cy="9" r="1.6"/><path d="M6 29h28"/><path d="M12 25v4M28 25v4"/></svg>
+      </div>
+    </aside>
+    <section class="auth-card" aria-labelledby="login-title">
+      <h1 id="login-title">С возвращением</h1>
+      <p class="sub">Введите e-mail и пароль, чтобы открыть личный кабинет.</p>
+
+      <div class="notice notice-info">
+        <div><strong>Демо-доступ:</strong> заказчик — ivan@example.com / ivan12345, менеджер — manager@banket.example / manager12345.</div>
+      </div>
+
+      {% if form.non_field_errors %}
+        <div class="notice notice-error"><div><strong>Неверный вход.</strong> {{ form.non_field_errors.0 }}</div></div>
+      {% endif %}
+
+      <form id="login-form" action="{% url 'main:login' %}" method="post" novalidate>
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ next }}">
+        <div class="form-grid">
+          <div class="field{% if form.username.errors %} invalid{% endif %}">
+            <label for="{{ form.username.id_for_label }}">E-mail</label>
+            {{ form.username }}
+            {% if form.username.errors %}<span class="field-error">{{ form.username.errors.0 }}</span>{% endif %}
+          </div>
+          <div class="field{% if form.password.errors %} invalid{% endif %}">
+            <label for="{{ form.password.id_for_label }}">Пароль</label>
+            {{ form.password }}
+            {% if form.password.errors %}<span class="field-error">{{ form.password.errors.0 }}</span>{% endif %}
+          </div>
+        </div>
+        <div class="auth-links">
+          <a href="{% url 'main:contacts' %}">Забыли пароль?</a>
+          <span class="muted">Пароли хранятся в виде хешей</span>
+        </div>
+        <button class="btn btn-primary btn-block auth-submit" type="submit">Войти</button>
+      </form>
+      <p class="auth-switch">Нет аккаунта? <a href="{% url 'main:register' %}">Зарегистрируйтесь</a></p>
+    </section>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Банкетные решения — выездной кейтеринг в Ульяновске{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <div class="container hero-grid">
+    <div>
+      <h1>Выездной кейтеринг для вашего мероприятия</h1>
+      <p class="lead">Фуршеты, банкеты и кофе-брейки. Готовим на выезде, рассчитываем стоимость с учётом количества гостей, сложности оформления и загрузки кухни на выбранную дату.</p>
+      <div class="hero-cta">
+        <a class="btn btn-primary btn-lg" href="{% url 'main:calculator' %}">Рассчитать банкет <span class="arrow">→</span></a>
+        <a class="btn btn-outline btn-lg" href="{% url 'main:catalog' %}">Смотреть меню</a>
+      </div>
+      <div class="hero-note">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 12 5 5 11-11"/></svg>
+        Смета и проверка суточного лимита кухни — до звонка менеджера
+      </div>
+    </div>
+    <aside class="requirement" aria-label="Особое требование варианта 16">
+      <div class="eyebrow">Особое требование варианта</div>
+      <h2>Считаем выход еды и ресурсы кухни</h2>
+      <p>Если суммарная загрузка кухни на выбранную дату превышает суточный лимит, заказ не принимается — система предложит соседнюю дату. Стоимость рассчитывается автоматически: гости × цена позиции + надбавка за сложное оформление.</p>
+      <div class="mini">
+        <div><b>1 : 15</b>официант на 15 гостей</div>
+        <div><b>1 : 12</b>комплект на 12 гостей</div>
+        <div><b>350 г</b>норма на гостя</div>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="formats-title">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <h2 id="formats-title">Форматы мероприятий</h2>
+        <p>Выход еды и норматив для каждого формата считаются на сервере.</p>
+      </div>
+    </div>
+    <div class="format-grid">
+      {% for format in formats %}
+        <article class="format-card">
+          <div class="eyebrow">{{ format.duration_hours }} ч · до {{ format.kitchen_daily_limit }} гостей в сутки</div>
+          <h3>{{ format.name }}</h3>
+          <p>{{ format.description|truncatechars:120 }}</p>
+          <dl class="format-meta">
+            <div><dt>Цена за гостя</dt><dd>{{ format.price_per_guest|floatformat:0 }} ₽</dd></div>
+            <div><dt>Норма выхода</dt><dd>{{ format.min_output_per_guest }} г/чел.</dd></div>
+          </dl>
+          <a class="btn btn-outline btn-block" href="{% url 'main:calculator' %}?format={{ format.slug }}">Рассчитать {{ format.name|lower }}</a>
+        </article>
+      {% empty %}
+        <p class="muted">Форматы пока не добавлены.</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section section-tight" aria-labelledby="popular-title">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <h2 id="popular-title">Популярные позиции меню</h2>
+        <p>Карточки загружаются из базы: категория, цена и выход блюда.</p>
+      </div>
+      <a class="btn btn-outline" href="{% url 'main:catalog' %}">Весь каталог</a>
+    </div>
+    <div class="dish-grid">
+      {% for dish in popular %}
+        {% include 'main/includes/dish_card.html' %}
+      {% empty %}
+        <p class="muted">Каталог пока пуст. Запустите команду seed_demo.</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section section-tight" aria-labelledby="steps-title">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <h2 id="steps-title">Как оформить заказ</h2>
+        <p>Четыре шага от выбора меню до подтверждения менеджером.</p>
+      </div>
+    </div>
+    <div class="steps">
+      <article class="step"><div class="step-num">1</div><div><h3>Выберите меню и количество гостей</h3><p>Соберите позиции из каталога или начните с готового сета.</p></div></article>
+      <article class="step"><div class="step-num">2</div><div><h3>Укажите дату и адрес мероприятия</h3><p>Система проверит загрузку кухни и предложит свободную дату.</p></div></article>
+      <article class="step"><div class="step-num">3</div><div><h3>Получите смету с автоматическим расчётом</h3><p>Выход еды, официанты и посуда добавляются в смету сами.</p></div></article>
+      <article class="step"><div class="step-num">4</div><div><h3>Подтвердите — менеджер свяжется с вами</h3><p>Согласуем детали, состав и время подачи.</p></div></article>
+    </div>
+    <div class="stats stats-wide">
+      <div class="stat"><span>Блюд в меню</span><b>{{ stats.dishes }}</b></div>
+      <div class="stat"><span>Форматов мероприятий</span><b>{{ stats.formats }}</b></div>
+      <div class="stat"><span>Проведённых заказов</span><b>{{ stats.orders }}</b></div>
+    </div>
+  </div>
+</section>
+{% endblock %}

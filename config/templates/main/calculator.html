@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% block title %}Калькулятор стоимости банкета — Банкетные решения{% endblock %}
+{% block description %}Расчёт сметы банкета: гости, формат, оформление, выход еды и автоматический расчёт персонала.{% endblock %}
+
+{% block content %}
+<div class="container">
+  <nav class="breadcrumbs" aria-label="Хлебные крошки">
+    <a href="{% url 'main:index' %}">Главная</a><span>›</span><span aria-current="page">Калькулятор</span>
+  </nav>
+  <div class="page-head">
+    <h1>Калькулятор стоимости банкета</h1>
+    <p>Стоимость = гости × цена сета + надбавка за оформление + персонал + посуда. Выход еды и суточный лимит кухни проверяет сервер при каждом изменении параметров.</p>
+  </div>
+
+  <div class="split">
+    <form class="card" id="calc-form" action="{% url 'main:calculator' %}" method="post" data-api="{% url 'main:api_calculator' %}" novalidate>
+      {% csrf_token %}
+      <h2 class="card-title">Параметры мероприятия</h2>
+      {% if form.non_field_errors %}
+        <div class="notice notice-error"><div>{{ form.non_field_errors.0 }}</div></div>
+      {% endif %}
+      <div class="form-grid">
+        <div class="field{% if form.event_format.errors %} invalid{% endif %}">
+          <label for="{{ form.event_format.id_for_label }}">{{ form.event_format.label }}</label>
+          {{ form.event_format }}
+          {% if form.event_format.errors %}<span class="field-error">{{ form.event_format.errors.0 }}</span>{% endif %}
+        </div>
+        <div class="field{% if form.menu_template.errors %} invalid{% endif %}">
+          <label for="{{ form.menu_template.id_for_label }}">{{ form.menu_template.label }}</label>
+          {{ form.menu_template }}
+          <span class="field-hint">Сет задаёт состав меню и выход еды</span>
+          {% if form.menu_template.errors %}<span class="field-error">{{ form.menu_template.errors.0 }}</span>{% endif %}
+        </div>
+        <div class="field{% if form.guests.errors %} invalid{% endif %}">
+          <label for="{{ form.guests.id_for_label }}">{{ form.guests.label }}</label>
+          {{ form.guests }}
+          <span class="field-hint">От 10 до 400 человек</span>
+          {% if form.guests.errors %}<span class="field-error">{{ form.guests.errors.0 }}</span>{% endif %}
+        </div>
+        <div class="field{% if form.event_date.errors %} invalid{% endif %}">
+          <label for="{{ form.event_date.id_for_label }}">{{ form.event_date.label }}</label>
+          {{ form.event_date }}
+          <span class="field-hint">Не раньше {{ min_date|date:"d E Y" }}</span>
+          {% if form.event_date.errors %}<span class="field-error">{{ form.event_date.errors.0 }}</span>{% endif %}
+        </div>
+        <div class="field{% if form.decor_percent.errors %} invalid{% endif %}">
+          <label for="{{ form.decor_percent.id_for_label }}">{{ form.decor_percent.label }}</label>
+          {{ form.decor_percent }}
+          <span class="field-hint">Надбавка к стоимости меню</span>
+          {% if form.decor_percent.errors %}<span class="field-error">{{ form.decor_percent.errors.0 }}</span>{% endif %}
+        </div>
+      </div>
+
+      <div class="notice notice-info notice-spaced">
+        <div>Если кухня загружена, сервер вернёт отказ и предложит соседнюю дату. Проверка идёт по суточному лимиту, а не по времени слота.</div>
+      </div>
+
+      <div class="form-actions">
+        <button class="btn btn-primary" type="submit">Рассчитать</button>
+        <span class="small muted">Расчёт обновляется без перезагрузки, но проверяется на сервере.</span>
+        <span class="loading" id="calc-loading" hidden>Считаем…</span>
+      </div>
+    </form>
+
+    <aside class="card summary" aria-live="polite">
+      <h2>Предварительная смета</h2>
+      <div class="sum-row"><span>Гости</span><span id="s-guests">{{ estimate.guests|default:30 }}</span></div>
+      <div class="sum-row"><span>Сет</span><span id="s-template">{{ estimate.template.name|default:"—" }}</span></div>
+      <div class="sum-row"><span>Стоимость меню / гость</span><span id="s-price">{{ estimate.price_per_guest|floatformat:0|default:"0" }} ₽</span></div>
+      <div class="sum-row"><span>Меню</span><span id="s-menu">{{ estimate.menu_total|floatformat:0|default:"0" }} ₽</span></div>
+      <div class="sum-row"><span>Выход еды</span><span id="s-output">{{ estimate.output_per_guest|default:0 }} г / чел.</span></div>
+      <div class="sum-row"><span>Норма формата</span><span id="s-norm" class="muted">{{ estimate.norm|default:0 }} г / чел.</span></div>
+      <div class="sum-row"><span>Надбавка за оформление</span><span id="s-decor">+{{ estimate.decor_percent|default:10 }} %</span></div>
+      <div class="sum-row"><span>Персонал</span><span id="s-staff">{{ estimate.staff_total|floatformat:0|default:"0" }} ₽</span></div>
+      <div class="sum-row"><span>Посуда и текстиль</span><span id="s-tableware">{{ estimate.tableware_total|floatformat:0|default:"0" }} ₽</span></div>
+      <div class="sum-divider"></div>
+      <div class="sum-total"><span>Итого</span><b id="s-total">{{ estimate.total|floatformat:0|default:"0" }} ₽</b></div>
+
+      <div class="notice notice-success notice-spaced" id="norm-ok"{% if estimate.output_ok is False %} hidden{% endif %}>
+        <div>Выход в норме. Официанты: <b id="s-waiters">{{ estimate.staff_needed|default:0 }} чел.</b> Посуда: <b id="s-sets">{{ estimate.tableware_needed|default:0 }} компл.</b></div>
+      </div>
+      <div class="notice notice-warning notice-spaced" id="norm-warn"{% if estimate.output_ok is not False %} hidden{% endif %}>
+        <div><strong>Выход ниже нормы на <span id="s-deficit">{{ estimate.deficit|default:0 }}</span> г.</strong> Добавьте горячее или закуски. Официанты: <b id="s-waiters-2">{{ estimate.staff_needed|default:0 }} чел.</b> Посуда: <b id="s-sets-2">{{ estimate.tableware_needed|default:0 }} компл.</b></div>
+      </div>
+      <div class="notice notice-error notice-spaced" id="kitchen-note" hidden>
+        <div><strong>Дата недоступна.</strong> Суточный лимит кухни исчерпан. Ближайшая свободная дата — <b id="nearest-date">—</b>.</div>
+      </div>
+      <p class="hint">Финальная смета фиксируется сервером в момент оформления заказа. Обычно 2–3 секунды.</p>
+      <a class="btn btn-primary btn-block" href="{% url 'main:checkout' %}" id="to-checkout">Перейти к оформлению</a>
+    </aside>
+  </div>
+  {{ templates_json|json_script:"menu-templates" }}
+</div>
+{% endblock %}

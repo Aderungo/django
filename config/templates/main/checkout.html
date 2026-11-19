@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+{% block title %}Оформление заказа кейтеринга — Банкетные решения{% endblock %}
+
+{% block content %}
+<div class="container">
+  <nav class="breadcrumbs" aria-label="Хлебные крошки">
+    <a href="{% url 'main:index' %}">Главная</a><span>›</span><span aria-current="page">Оформление заказа</span>
+  </nav>
+  <div class="page-head">
+    <h1>Оформление заказа кейтеринга</h1>
+    <p>Заполните данные — сервер проверит дату по суточному лимиту кухни и сохранит заказ, позиции, смены персонала и загрузку одной транзакцией.</p>
+  </div>
+
+  <div class="split wide-left">
+    <form class="card" id="checkout-form" action="{% url 'main:checkout' %}" method="post" enctype="multipart/form-data" novalidate>
+      {% csrf_token %}
+      <h2 class="card-title">Данные заказа</h2>
+
+      {% if form.non_field_errors %}
+        <div class="notice notice-error">
+          <div>{% for error in form.non_field_errors %}{{ error }}{% if not forloop.last %}<br>{% endif %}{% endfor %}</div>
+        </div>
+      {% endif %}
+
+      <div class="form-grid">
+        <div class="field full{% if form.contact_name.errors %} invalid{% endif %}">
+          <label for="{{ form.contact_name.id_for_label }}">ФИО заказчика</label>
+          {{ form.contact_name }}
+          {% if form.contact_name.errors %}<span class="field-error">{{ form.contact_name.errors.0 }}</span>{% else %}<span class="field-hint">Минимум имя и фамилия</span>{% endif %}
+        </div>
+        <div class="field{% if form.contact_phone.errors %} invalid{% endif %}">
+          <label for="{{ form.contact_phone.id_for_label }}">Телефон</label>
+          {{ form.contact_phone }}
+          {% if form.contact_phone.errors %}<span class="field-error">{{ form.contact_phone.errors.0 }}</span>{% else %}<span class="field-hint">Формат +7 (900) 000-00-00</span>{% endif %}
+        </div>
+        <div class="field{% if form.contact_email.errors %} invalid{% endif %}">
+          <label for="{{ form.contact_email.id_for_label }}">E-mail</label>
+          {{ form.contact_email }}
+          {% if form.contact_email.errors %}<span class="field-error">{{ form.contact_email.errors.0 }}</span>{% else %}<span class="field-hint">На почту придёт уведомление о принятии заказа</span>{% endif %}
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-grid">
+          <div class="field{% if form.event_format.errors %} invalid{% endif %}">
+            <label for="{{ form.event_format.id_for_label }}">Формат мероприятия</label>
+            {{ form.event_format }}
+            {% if form.event_format.errors %}<span class="field-error">{{ form.event_format.errors.0 }}</span>{% endif %}
+          </div>
+          <div class="field{% if form.menu_template.errors %} invalid{% endif %}">
+            <label for="{{ form.menu_template.id_for_label }}">Готовый сет</label>
+            {{ form.menu_template }}
+            {% if form.menu_template.errors %}<span class="field-error">{{ form.menu_template.errors.0 }}</span>{% endif %}
+          </div>
+          <div class="field{% if form.event_date.errors %} invalid{% endif %}">
+            <label for="{{ form.event_date.id_for_label }}">Дата мероприятия</label>
+            {{ form.event_date }}
+            {% if form.event_date.errors %}<span class="field-error">{{ form.event_date.errors.0 }}</span>{% else %}<span class="field-hint">Не раньше {{ min_date|date:"d E Y" }}</span>{% endif %}
+          </div>
+          <div class="field{% if form.guests.errors %} invalid{% endif %}">
+            <label for="{{ form.guests.id_for_label }}">Гостей</label>
+            {{ form.guests }}
+            {% if form.guests.errors %}<span class="field-error">{{ form.guests.errors.0 }}</span>{% else %}<span class="field-hint">От 10 до 400 человек</span>{% endif %}
+          </div>
+          <div class="field{% if form.decor_percent.errors %} invalid{% endif %}">
+            <label for="{{ form.decor_percent.id_for_label }}">Сложность оформления</label>
+            {{ form.decor_percent }}
+            {% if form.decor_percent.errors %}<span class="field-error">{{ form.decor_percent.errors.0 }}</span>{% endif %}
+          </div>
+          <div class="field full{% if form.address.errors %} invalid{% endif %}">
+            <label for="{{ form.address.id_for_label }}">Адрес мероприятия</label>
+            {{ form.address }}
+            {% if form.address.errors %}<span class="field-error">{{ form.address.errors.0 }}</span>{% else %}<span class="field-hint">Улица, дом и город</span>{% endif %}
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="field{% if form.sketch.errors %} invalid{% endif %}">
+          <label for="{{ form.sketch.id_for_label }}">Эскиз оформления (необязательно, до 5 МБ)</label>
+          <div class="file-drop">
+            {{ form.sketch }}
+            <span class="field-hint">PNG, JPG, WEBP или PDF, не больше 5 МБ</span>
+          </div>
+          {% if form.sketch.errors %}<span class="field-error">{{ form.sketch.errors.0 }}</span>{% endif %}
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="field{% if form.comment.errors %} invalid{% endif %}">
+          <label for="{{ form.comment.id_for_label }}">Комментарий</label>
+          {{ form.comment }}
+          {% if form.comment.errors %}<span class="field-error">{{ form.comment.errors.0 }}</span>{% endif %}
+        </div>
+      </div>
+
+      <div class="form-section">
+        <label class="checkbox" for="{{ form.consent.id_for_label }}">
+          {{ form.consent }}
+          <span>Согласен на обработку персональных данных и принимаю <a href="{% url 'main:contacts' %}">условия заказа</a></span>
+        </label>
+        {% if form.consent.errors %}<span class="field-error">{{ form.consent.errors.0 }}</span>{% endif %}
+      </div>
+
+      <div class="notice notice-error" id="checkout-error" hidden>
+        <div><strong>Заявка не отправлена.</strong> <span id="checkout-error-text">Проверьте выделенные поля.</span></div>
+      </div>
+
+      <div class="form-actions">
+        <button class="btn btn-primary" type="submit">Оформить заказ</button>
+        <span class="small muted">После отправки менеджер подтвердит дату и состав в течение 30 минут.</span>
+      </div>
+    </form>
+
+    <aside class="card summary" aria-live="polite" id="checkout-summary"
+           data-api="{% url 'main:api_calculator' %}">
+      <h2>К оформлению</h2>
+      {% if estimate %}
+        <div class="sum-row"><span>Формат</span><span id="e-format">{{ estimate.template.event_format.name|default:selected_format.name }}</span></div>
+        <div class="sum-row"><span>Сет</span><span id="e-template">{{ estimate.template.name|default:"—" }}</span></div>
+        <div class="sum-row"><span>Меню <span class="muted"><span id="e-price">{{ estimate.price_per_guest|floatformat:0 }}</span> ₽ × <span id="e-guests">{{ estimate.guests }}</span></span></span><span id="e-menu">{{ estimate.menu_total|floatformat:0 }} ₽</span></div>
+        <div class="sum-row"><span>Оформление (+<span id="e-decor">{{ estimate.decor_percent }}</span> %)</span><span id="e-decor-sum">{{ estimate.decor_total|floatformat:0 }} ₽</span></div>
+        <div class="sum-row"><span>Персонал</span><span id="e-staff">{{ estimate.staff_total|floatformat:0 }} ₽</span></div>
+        <div class="sum-row"><span>Посуда и текстиль</span><span id="e-tableware">{{ estimate.tableware_total|floatformat:0 }} ₽</span></div>
+        <div class="sum-divider"></div>
+        <div class="sum-total"><span>Итого</span><b id="e-total">{{ estimate.total|floatformat:0 }} ₽</b></div>
+        <div class="sum-row"><span>Выход еды</span><span><span id="e-output">{{ estimate.output_per_guest }}</span> г / чел.</span></div>
+        <div class="notice {% if estimate.output_ok %}notice-success{% else %}notice-warning{% endif %} notice-spaced" id="e-output-note">
+          <div>{% if estimate.output_ok %}Выход в норме{% else %}Выход ниже нормы на {{ estimate.deficit }} г{% endif %}. Норма формата — {{ estimate.norm }} г/чел. <span id="e-output-extra"></span></div>
+        </div>
+        <div class="notice notice-error notice-spaced" id="e-kitchen" hidden>
+          <div><strong>Дата недоступна.</strong> Ближайшая свободная — <b id="e-nearest">—</b>.</div>
+        </div>
+        <p class="hint">Смета и проверка лимитов кухни формируются сервером при отправке формы. Заказ, позиции и загрузка кухни сохраняются одной транзакцией.</p>
+        <div class="notice notice-warning">
+          <div><strong>Заявка может быть отклонена</strong>, если суточный лимит кухни уже достигнут.</div>
+        </div>
+      {% else %}
+        <p class="muted">Выберите формат мероприятия — смета появится здесь.</p>
+      {% endif %}
+    </aside>
+  </div>
+  {{ templates_json|json_script:"menu-templates" }}
+</div>
+{% endblock %}

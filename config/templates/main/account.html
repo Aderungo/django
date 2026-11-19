@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% block title %}Личный кабинет — Банкетные решения{% endblock %}
+
+{% block content %}
+<div class="container">
+  <nav class="breadcrumbs" aria-label="Хлебные крошки">
+    <a href="{% url 'main:index' %}">Главная</a><span>›</span><span aria-current="page">Личный кабинет</span>
+  </nav>
+  <div class="page-head">
+    <h1>Личный кабинет</h1>
+    <p>{{ profile.full_name|default:user.get_full_name|default:user.username }}, добрый день! Здесь хранятся заказы, сметы и даты мероприятий.</p>
+  </div>
+
+  <div class="stats stats-wide">
+    <div class="stat"><span>Всего заказов</span><b>{{ orders_count }}</b></div>
+    <div class="stat"><span>Активных</span><b>{{ active_count }}</b></div>
+    <div class="stat"><span>Отзывов</span><b>{{ reviews_count }}</b></div>
+  </div>
+
+  <div class="dash">
+    <aside class="side">
+      <div class="side-user">
+        <b>{{ profile.full_name|default:user.get_full_name|default:user.username }}</b>
+        <span>{{ user.email }}</span>
+        {% if profile.phone %}<span>{{ profile.phone }}</span>{% endif %}
+      </div>
+      <nav aria-label="Разделы кабинета">
+        <a class="active" href="{% url 'main:account' %}" aria-current="page">Мои заказы</a>
+        <a href="{% url 'main:password_change' %}">Смена пароля</a>
+        {% if user.is_staff %}<a href="{% url 'main:manager_dashboard' %}">Панель менеджера</a>{% endif %}
+        <form action="{% url 'main:logout' %}" method="post">
+          {% csrf_token %}
+          <button class="side-exit" type="submit">Выйти</button>
+        </form>
+      </nav>
+      <a class="btn btn-primary btn-block" href="{% url 'main:checkout' %}">Новый заказ</a>
+    </aside>
+
+    <div>
+      {% for order in orders %}
+        <article class="order-card">
+          <div class="order-top">
+            <div>
+              <h2 class="order-title"><a href="{% url 'main:order_detail' order.pk %}">Заказ {{ order.number }}</a></h2>
+              <div class="small muted">Создан {{ order.created_at|date:"d E Y, H:i" }}</div>
+            </div>
+            <span class="badge {{ order.status_css }}">{{ order.get_status_display }}</span>
+          </div>
+          <div class="order-meta">
+            <div><span>Дата</span><b>{{ order.event_date|date:"d E Y" }}</b></div>
+            <div><span>Гостей</span><b>{{ order.guests }}</b></div>
+            <div><span>Формат</span><b>{{ order.event_format.name }}</b></div>
+            <div><span>Сумма</span><b>{{ order.total|floatformat:0 }} ₽</b></div>
+          </div>
+          <p class="small muted order-address">{{ order.address }}</p>
+          <div class="order-actions">
+            <a class="btn btn-outline" href="{% url 'main:order_detail' order.pk %}">Открыть заказ</a>
+            <a class="btn btn-ghost" href="{% url 'main:order_print' order.pk %}">Печатная форма</a>
+            {% if order.can_edit and order.status != 'cancelled' %}
+              <a class="btn btn-ghost" href="{% url 'main:order_edit' order.pk %}">Изменить</a>
+            {% endif %}
+          </div>
+        </article>
+      {% empty %}
+        <div class="empty-state">
+          <h2>Заказов пока нет</h2>
+          <p>Выберите формат мероприятия и рассчитайте смету — заказ появится здесь.</p>
+          <a class="btn btn-primary" href="{% url 'main:calculator' %}">Рассчитать банкет</a>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

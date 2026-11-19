@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+{% block title %}Заказы — панель менеджера{% endblock %}
+
+{% block content %}
+<div class="container">
+  <nav class="breadcrumbs" aria-label="Хлебные крошки">
+    <a href="{% url 'main:index' %}">Главная</a><span>›</span>
+    <a href="{% url 'main:manager_dashboard' %}">Панель менеджера</a><span>›</span>
+    <span aria-current="page">Заказы</span>
+  </nav>
+  <div class="page-head">
+    <div class="page-head-row">
+      <div>
+        <h1>Заказы кейтеринга</h1>
+        <p>Поиск по номеру и контактам, фильтры по статусу, формату и датам, сортировка, пагинация по 20 записей.</p>
+      </div>
+      <div class="section-actions">
+        <a class="btn btn-ghost" href="{% url 'main:manager_orders_csv' %}?{{ query_string }}">Экспорт CSV</a>
+        <a class="btn btn-primary" href="{% url 'main:dish_create' %}">Добавить блюдо</a>
+      </div>
+    </div>
+  </div>
+
+  <section class="panel" aria-labelledby="orders-filter-title">
+    <h2 class="visually-hidden" id="orders-filter-title">Фильтр заказов</h2>
+    <form class="filters" action="{% url 'main:manager_orders' %}" method="get">
+      <div class="field">
+        <label for="q">Поиск</label>
+        <input class="input" id="q" name="q" type="search" value="{{ current.q }}" placeholder="Номер, имя, телефон" autocomplete="off">
+      </div>
+      <div class="field">
+        <label for="status">Статус</label>
+        <select class="select" id="status" name="status">
+          <option value="">Все</option>
+          {% for value, label in statuses %}
+            <option value="{{ value }}"{% if current.status == value %} selected{% endif %}>{{ label }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="field">
+        <label for="format">Формат</label>
+        <select class="select" id="format" name="format">
+          <option value="">Все</option>
+          {% for format in formats %}
+            <option value="{{ format.slug }}"{% if current.format == format.slug %} selected{% endif %}>{{ format.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="field">
+        <label for="date_from">Дата с</label>
+        <input class="input" id="date_from" name="date_from" type="date" value="{{ current.date_from }}">
+      </div>
+      <div class="field">
+        <label for="date_to">Дата по</label>
+        <input class="input" id="date_to" name="date_to" type="date" value="{{ current.date_to }}">
+      </div>
+      <div class="field">
+        <label for="sort">Сортировка</label>
+        <select class="select" id="sort" name="sort">
+          {% for value, option in sort_options.items %}
+            <option value="{{ value }}"{% if current.sort == value %} selected{% endif %}>{{ option.0 }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="filter-actions">
+        <button class="btn btn-primary" type="submit">Показать</button>
+        <a class="btn btn-ghost" href="{% url 'main:manager_orders' %}">Сбросить</a>
+      </div>
+    </form>
+  </section>
+
+  <div class="catalog-bar">
+    <span>Найдено: <b>{{ total }}</b> заказов</span>
+    <span>Страница <b>{{ page_obj.number }}</b> из <b>{{ page_obj.paginator.num_pages }}</b></span>
+  </div>
+
+  <div class="table-wrap">
+    <table class="data">
+      <caption class="visually-hidden">Список заказов кейтеринга</caption>
+      <thead>
+        <tr>
+          <th scope="col">Заявка</th><th scope="col">Дата</th><th scope="col">Заказчик</th>
+          <th scope="col">Формат</th><th scope="col">Гостей</th><th scope="col">Сумма</th>
+          <th scope="col">Статус</th><th scope="col">Изменить</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for order in page_obj %}
+          <tr>
+            <td><a href="{% url 'main:order_detail' order.pk %}"><b>{{ order.number }}</b></a></td>
+            <td>{{ order.event_date|date:"d.m.Y" }}</td>
+            <td>{{ order.contact_name }}<br><span class="small muted">{{ order.contact_phone }}</span></td>
+            <td>{{ order.event_format.name }}</td>
+            <td>{{ order.guests }}</td>
+            <td>{{ order.total|floatformat:0 }} ₽</td>
+            <td><span class="badge {{ order.status_css }}">{{ order.get_status_display }}</span></td>
+            <td>
+              <form class="status-form" action="{% url 'main:manager_order_status' order.pk %}" method="post">
+                {% csrf_token %}
+                <label class="visually-hidden" for="status-{{ order.pk }}">Статус заказа {{ order.number }}</label>
+                <select class="select select-sm" id="status-{{ order.pk }}" name="status">
+                  {% for value, label in statuses %}
+                    <option value="{{ value }}"{% if order.status == value %} selected{% endif %}>{{ label }}</option>
+                  {% endfor %}
+                </select>
+                <button class="btn btn-ghost btn-sm" type="submit">OK</button>
+              </form>
+            </td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="8">Заказы не найдены.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  {% if page_obj.paginator.num_pages > 1 %}
+    <nav class="pagination" aria-label="Страницы заказов">
+      {% if page_obj.has_previous %}
+        <a class="page-link" href="{% querystring page=page_obj.previous_page_number %}" rel="prev">←</a>
+      {% else %}
+        <span class="page-link is-disabled">←</span>
+      {% endif %}
+      {% for num in page_obj.paginator.page_range %}
+        {% if num == page_obj.number %}
+          <span class="page-link active" aria-current="page">{{ num }}</span>
+        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+          <a class="page-link" href="{% querystring page=num %}">{{ num }}</a>
+        {% endif %}
+      {% endfor %}
+      {% if page_obj.has_next %}
+        <a class="page-link" href="{% querystring page=page_obj.next_page_number %}" rel="next">→</a>
+      {% else %}
+        <span class="page-link is-disabled">→</span>
+      {% endif %}
+    </nav>
+  {% endif %}
+</div>
+{% endblock %}

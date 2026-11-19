@@ -1,0 +1,16 @@
+<article class="dish-card">
+  <div class="dish-art">
+    {% if dish.image %}
+      <img class="dish-img" src="{{ dish.image.url }}" alt="{{ dish.name }}" width="480" height="360" loading="lazy" decoding="async">
+    {% else %}
+      <svg viewBox="0 0 96 96" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 47h62c0 17-13 29-31 29S17 64 17 47Z"/><path d="M23 47c5-12 14-19 25-19s20 7 25 19"/><path d="M12 61h72" opacity=".55"/></svg>
+    {% endif %}
+  </div>
+  <div class="dish-body">
+    <div class="dish-meta">{{ dish.category.name }}<span>·</span>{{ dish.get_unit_display }}</div>
+    <h3><a href="{{ dish.get_absolute_url }}">{{ dish.name }}</a></h3>
+    <div class="dish-price">{{ dish.price|floatformat:0 }} ₽ <small>/ {{ dish.get_unit_display }}</small></div>
+    <div class="dish-note">Выход: {{ dish.output_grams }} г</div>
+    <a class="btn btn-outline btn-block" href="{{ dish.get_absolute_url }}">Подробнее</a>
+  </div>
+</article>

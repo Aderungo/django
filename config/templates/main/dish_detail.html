@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% block title %}{{ dish.name }} — Банкетные решения{% endblock %}
+{% block description %}{{ dish.description|truncatechars:150 }}{% endblock %}
+
+{% block content %}
+<div class="container">
+  <nav class="breadcrumbs" aria-label="Хлебные крошки">
+    <a href="{% url 'main:index' %}">Главная</a><span>›</span>
+    <a href="{% url 'main:catalog' %}">Каталог</a><span>›</span>
+    <span aria-current="page">{{ dish.name }}</span>
+  </nav>
+
+  <article class="dish-detail">
+    <div class="dish-detail-media">
+      {% if dish.image %}
+        <img src="{{ dish.image.url }}" alt="{{ dish.name }}" width="480" height="360" decoding="async">
+      {% else %}
+        <div class="dish-detail-placeholder">
+          <svg viewBox="0 0 96 96" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 47h62c0 17-13 29-31 29S17 64 17 47Z"/><path d="M23 47c5-12 14-19 25-19s20 7 25 19"/><path d="M12 61h72" opacity=".55"/></svg>
+        </div>
+      {% endif %}
+    </div>
+    <div class="dish-detail-body">
+      <div class="eyebrow">{{ dish.category.name }} · {{ dish.get_unit_display }}</div>
+      <h1>{{ dish.name }}</h1>
+      <p class="lead">{{ dish.description }}</p>
+
+      <dl class="kv kv-inline">
+        <dt>Цена</dt><dd>{{ dish.price|floatformat:0 }} ₽ / {{ dish.get_unit_display }}</dd>
+        <dt>Выход</dt><dd>{{ dish.output_grams }} г</dd>
+        {% if dish.composition %}<dt>Состав</dt><dd>{{ dish.composition }}</dd>{% endif %}
+        <dt>Обновлено</dt><dd>{{ dish.updated_at|date:"d E Y" }}</dd>
+      </dl>
+
+      <div class="dish-detail-actions">
+        <a class="btn btn-primary" href="{% url 'main:calculator' %}">Рассчитать банкет</a>
+        <a class="btn btn-outline" href="{% url 'main:catalog' %}">Вернуться в каталог</a>
+      </div>
+
+      {% if user.is_staff %}
+        <div class="manager-inline-actions">
+          <a class="btn btn-ghost btn-sm" href="{% url 'main:dish_update' dish.pk %}">Редактировать</a>
+          <a class="btn btn-ghost btn-sm" href="{% url 'main:dish_delete' dish.pk %}">Удалить</a>
+        </div>
+      {% endif %}
+    </div>
+  </article>
+
+  {% if dish.templates.all %}
+    <section class="section section-tight" aria-labelledby="sets-title">
+      <h2 id="sets-title">Входит в готовые сеты</h2>
+      <div class="tag-list">
+        {% for template in dish.templates.all %}
+          <span class="tag">{{ template.name }} · {{ template.event_format.name }}</span>
+        {% endfor %}
+      </div>
+    </section>
+  {% endif %}
+
+  {% if similar %}
+    <section class="section section-tight" aria-labelledby="similar-title">
+      <div class="section-head">
+        <h2 id="similar-title">Похожие позиции</h2>
+      </div>
+      <div class="dish-grid">
+        {% for dish in similar %}
+          {% include 'main/includes/dish_card.html' %}
+        {% endfor %}
+      </div>
+    </section>
+  {% endif %}
+</div>
+{% endblock %}

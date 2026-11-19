@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% block title %}Каталог блюд и услуг — Банкетные решения{% endblock %}
+{% block description %}Каталог блюд, сетов и услуг кейтеринга с поиском, фильтрами и сортировкой.{% endblock %}
+
+{% block content %}
+<div class="container">
+  <nav class="breadcrumbs" aria-label="Хлебные крошки">
+    <a href="{% url 'main:index' %}">Главная</a><span>›</span><span aria-current="page">Каталог блюд и услуг</span>
+  </nav>
+  <div class="page-head">
+    <h1>Каталог блюд и услуг</h1>
+    <p>Поиск по названию и составу, фильтры по категории, единице и цене, сортировка по названию, цене и выходу. Все позиции — из базы данных.</p>
+  </div>
+
+  <section class="panel" aria-labelledby="filters-title">
+    <h2 class="visually-hidden" id="filters-title">Фильтр каталога</h2>
+    <form class="filters" action="{% url 'main:catalog' %}" method="get">
+      <div class="field search-field">
+        <label for="q">Поиск</label>
+        <div class="search-box">
+          <input class="input" id="q" name="q" type="search" value="{{ current.q }}" placeholder="Например, «торт»" autocomplete="off" aria-describedby="search-hint">
+          <div class="suggestions" id="search-suggestions" hidden></div>
+        </div>
+        <span class="field-hint" id="search-hint">Подсказки появляются без перезагрузки страницы</span>
+      </div>
+      <div class="field">
+        <label for="category">Категория</label>
+        <select class="select" id="category" name="category">
+          <option value="">Все категории</option>
+          {% for category in categories %}
+            <option value="{{ category.slug }}"{% if current.category == category.slug %} selected{% endif %}>{{ category.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="field">
+        <label for="unit">Единица</label>
+        <select class="select" id="unit" name="unit">
+          <option value="">Любая</option>
+          {% for value, label in units %}
+            <option value="{{ value }}"{% if current.unit == value %} selected{% endif %}>{{ label }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="field">
+        <label for="price_from">Цена от, ₽</label>
+        <input class="input" id="price_from" name="price_from" type="number" min="0" step="10" value="{{ current.price_from }}" inputmode="numeric">
+      </div>
+      <div class="field">
+        <label for="price_to">Цена до, ₽</label>
+        <input class="input" id="price_to" name="price_to" type="number" min="0" step="10" value="{{ current.price_to }}" inputmode="numeric">
+      </div>
+      <div class="field">
+        <label for="sort">Сортировка</label>
+        <select class="select" id="sort" name="sort">
+          {% for value, option in sort_options.items %}
+            <option value="{{ value }}"{% if current.sort == value %} selected{% endif %}>{{ option.0 }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="filter-actions">
+        <button class="btn btn-primary" type="submit">Применить</button>
+        <a class="btn btn-ghost" href="{% url 'main:catalog' %}">Сбросить</a>
+      </div>
+    </form>
+  </section>
+
+  <div class="catalog-bar">
+    <span>Найдено: <b>{{ total }}</b> позиций{% if active_filters %} · активных фильтров: <b>{{ active_filters }}</b>{% endif %}</span>
+    <span>Страница <b>{{ page_obj.number }}</b> из <b>{{ page_obj.paginator.num_pages }}</b></span>
+  </div>
+
+  <div class="dish-grid">
+    {% for dish in page_obj %}
+      {% include 'main/includes/dish_card.html' %}
+    {% empty %}
+      <div class="empty-state">
+        <h2>Ничего не найдено</h2>
+        <p>Попробуйте изменить запрос или сбросить фильтры.</p>
+        <a class="btn btn-outline" href="{% url 'main:catalog' %}">Сбросить фильтры</a>
+      </div>
+    {% endfor %}
+  </div>
+
+  {% if page_obj.paginator.num_pages > 1 %}
+    <nav class="pagination" aria-label="Страницы каталога">
+      {% if page_obj.has_previous %}
+        <a class="page-link" href="{% querystring page=page_obj.previous_page_number %}" rel="prev">←</a>
+      {% else %}
+        <span class="page-link is-disabled">←</span>
+      {% endif %}
+      {% for num in page_obj.paginator.page_range %}
+        {% if num == page_obj.number %}
+          <span class="page-link active" aria-current="page">{{ num }}</span>
+        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+          <a class="page-link" href="{% querystring page=num %}">{{ num }}</a>
+        {% endif %}
+      {% endfor %}
+      {% if page_obj.has_next %}
+        <a class="page-link" href="{% querystring page=page_obj.next_page_number %}" rel="next">→</a>
+      {% else %}
+        <span class="page-link is-disabled">→</span>
+      {% endif %}
+    </nav>
+  {% endif %}
+</div>
+{% endblock %}

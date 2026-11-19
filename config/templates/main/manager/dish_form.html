@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% block title %}{{ title }} — панель менеджера{% endblock %}
+
+{% block content %}
+<div class="container">
+  <nav class="breadcrumbs" aria-label="Хлебные крошки">
+    <a href="{% url 'main:index' %}">Главная</a><span>›</span>
+    <a href="{% url 'main:manager_dashboard' %}">Панель менеджера</a><span>›</span>
+    <span aria-current="page">{{ title }}</span>
+  </nav>
+  <div class="page-head">
+    <h1>{{ title }}</h1>
+    <p>Поля проверяются на сервере. Фото принимается только PNG, JPG или WEBP размером до 5 МБ.</p>
+  </div>
+
+  <form class="card card-narrow" action="{% if mode == 'update' %}{% url 'main:dish_update' dish.pk %}{% else %}{% url 'main:dish_create' %}{% endif %}" method="post" enctype="multipart/form-data" novalidate>
+    {% csrf_token %}
+    {% if form.non_field_errors %}
+      <div class="notice notice-error"><div>{{ form.non_field_errors.0 }}</div></div>
+    {% endif %}
+    <div class="form-grid">
+      <div class="field{% if form.name.errors %} invalid{% endif %}">
+        <label for="{{ form.name.id_for_label }}">Название</label>
+        {{ form.name }}
+        {% if form.name.errors %}<span class="field-error">{{ form.name.errors.0 }}</span>{% endif %}
+      </div>
+      <div class="field{% if form.category.errors %} invalid{% endif %}">
+        <label for="{{ form.category.id_for_label }}">Категория</label>
+        {{ form.category }}
+        {% if form.category.errors %}<span class="field-error">{{ form.category.errors.0 }}</span>{% endif %}
+      </div>
+      <div class="field{% if form.price.errors %} invalid{% endif %}">
+        <label for="{{ form.price.id_for_label }}">Цена, ₽</label>
+        {{ form.price }}
+        {% if form.price.errors %}<span class="field-error">{{ form.price.errors.0 }}</span>{% endif %}
+      </div>
+      <div class="field{% if form.unit.errors %} invalid{% endif %}">
+        <label for="{{ form.unit.id_for_label }}">Единица</label>
+        {{ form.unit }}
+        {% if form.unit.errors %}<span class="field-error">{{ form.unit.errors.0 }}</span>{% endif %}
+      </div>
+      <div class="field{% if form.output_grams.errors %} invalid{% endif %}">
+        <label for="{{ form.output_grams.id_for_label }}">Выход, г</label>
+        {{ form.output_grams }}
+        {% if form.output_grams.errors %}<span class="field-error">{{ form.output_grams.errors.0 }}</span>{% endif %}
+      </div>
+      <div class="field{% if form.image.errors %} invalid{% endif %}">
+        <label for="{{ form.image.id_for_label }}">Фото</label>
+        {{ form.image }}
+        <span class="field-hint">{{ form.image.help_text }}</span>
+        {% if form.image.errors %}<span class="field-error">{{ form.image.errors.0 }}</span>{% endif %}
+      </div>
+      <div class="field full{% if form.composition.errors %} invalid{% endif %}">
+        <label for="{{ form.composition.id_for_label }}">Состав</label>
+        {{ form.composition }}
+        {% if form.composition.errors %}<span class="field-error">{{ form.composition.errors.0 }}</span>{% endif %}
+      </div>
+      <div class="field full{% if form.description.errors %} invalid{% endif %}">
+        <label for="{{ form.description.id_for_label }}">Описание</label>
+        {{ form.description }}
+        {% if form.description.errors %}<span class="field-error">{{ form.description.errors.0 }}</span>{% endif %}
+      </div>
+    </div>
+
+    <div class="checkbox-row">
+      <label class="checkbox" for="{{ form.is_active.id_for_label }}">{{ form.is_active }}<span>Доступно в каталоге</span></label>
+      <label class="checkbox" for="{{ form.is_popular.id_for_label }}">{{ form.is_popular }}<span>Популярное</span></label>
+    </div>
+
+    <div class="form-actions">
+      <button class="btn btn-primary" type="submit">Сохранить</button>
+      <a class="btn btn-ghost" href="{% url 'main:catalog' %}">Отмена</a>
+      {% if mode == 'update' %}
+        <a class="btn btn-ghost" href="{% url 'main:dish_delete' dish.pk %}">Удалить</a>
+      {% endif %}
+    </div>
+  </form>
+</div>
+{% endblock %}

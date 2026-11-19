@@ -1,0 +1,234 @@
+{
+  "results": [
+    {
+      "name": "01-index",
+      "width": 375,
+      "status": 200,
+      "file": "C:\\Users\\AderungoPC\\Desktop\\LEONID-DJANGO\\reports\\screenshots\\01-index-375.png"
+    },
+    {
+      "name": "02-catalog",
+      "width": 375,
+      "status": 200,
+      "file": "C:\\Users\\AderungoPC\\Desktop\\LEONID-DJANGO\\reports\\screenshots\\02-catalog-375.png"
+    },
+    {
+      "name": "03-catalog-filter",
+      "width": 375,
+      "status": 200,
+      "file": "C:\\Users\\AderungoPC\\Desktop\\LEONID-DJANGO\\reports\\screenshots\\03-catalog-filter-375.png"
+    },
+    {
+      "name": "04-dish-detail",
+      "width": 375,
+      "status": 200,
+      "file": "C:\\Users\\AderungoPC\\Desktop\\LEONID-DJANGO\\reports\\screenshots\\04-dish-detail-375.png"
+    },
+    {
+      "name": "05-calculator",
+      "width": 375,
+      "status": 200,
+      "file": "C:\\Users\\AderungoPC\\Desktop\\LEONID-DJANGO\\reports\\screenshots\\05-calculator-375.png"
+    },
+    {
+      "name": "06-checkout",
+      "width": 375,
+      "status": 200,
+      "file": "C:\\Users\\AderungoPC\\Desktop\\LEONID-DJANGO\\reports\\screenshots\\06-checkout-375.png"
+    },
+    {
+      "name": "07-contacts",
+      "width": 375,
+      "status": 200,
+      "file": "C:\\Users\\AderungoPC\\Desktop\\LEONID-DJANGO\\reports\\screenshots\\07-contacts-375.png"
+    },
+    {
+      "name": "08-login",
+      "width": 375,
+      "status": 200,
+      "file": "C:\\Users\\AderungoPC\\Desktop\\LEONID-DJANGO\\reports\\screenshots\\08-login-375.png"
+    },
+    {
+      "name": "09-register",
+      "width": 375,
+      "status": 200,
+      "file": "C:\\Users\\AderungoPC\\Desktop\\LEONID-DJANGO\\reports\\screenshots\\09-register-375.png"
+    },
+    {
+      "name": "10-account",
+      "width": 375,
+      "status": 200,
+      "file": "C:\\Users\\AderungoPC\\Desktop\\LEONID-DJANGO\\reports\\screenshots\\10-account-375.png"
+    },
+    {
+      "name": "11-order-detail",
+      "width": 375,
+      "status": 200,
+      "file": "C:\\Users\\AderungoPC\\Desktop\\LEONID-DJANGO\\reports\\screenshots\\11-order-detail-375.png"
+    },
+    {
+      "name": "12-order-edit",
+      "width": 375,
+      "status": 200,
+      "file": "C:\\Users\\AderungoPC\\Desktop\\LEONID-DJANGO\\reports\\screenshots\\12-order-edit-375.png"
+    },
+    {
+      "name": "13-order-print",
+      "width": 375,
+      "status": 200,
+      "file": "C:\\Users\\AderungoPC\\Desktop\\LEONID-DJANGO\\reports\\screenshots\\13-order-print-375.png"
+    },
+    {
+      "name": "14-password-change",
+      "width": 375,
+      "status": 200,
+      "file": "C:\\Users\\AderungoPC\\Desktop\\LEONID-DJANGO\\reports\\screenshots\\14-password-change-375.png"
+    },
+    {
+      "name": "15-manager-dashboard",
+      "width": 375,
+      "status": 200,
+      "file": "C:\\Users\\AderungoPC\\Desktop\\LEONID-DJANGO\\reports\\screenshots\\15-manager-dashboard-375.png"
+    },
+    {
+      "name": "16-manager-orders",
+      "width": 375,
+      "status": 200,
+      "file": "C:\\Users\\AderungoPC\\Desktop\\LEONID-DJANGO\\reports\\screenshots\\16-manager-orders-375.png"
+    },
+    {
+      "name": "17-manager-dish-form",
+      "width": 375,
+      "status": 200,
+      "file": "C:\\Users\\AderungoPC\\Desktop\\LEONID-DJANGO\\reports\\screenshots\\17-manager-dish-form-375.png"
+    },
+    {
+      "name": "18-404",
+      "width": 375,
+      "status": 404,
+      "file": "C:\\Users\\AderungoPC\\Desktop\\LEONID-DJANGO\\reports\\screenshots\\18-404-375.png"
+    },
+    {
+      "name": "01-index",
+      "width": 1440,
+      "status": 200,
+      "file": "C:\\Users\\AderungoPC\\Desktop\\LEONID-DJANGO\\reports\\screenshots\\01-index-1440.png"
+    },
+    {
+      "name": "02-catalog",
+      "width": 1440,
+      "status": 200,
+      "file": "C:\\Users\\AderungoPC\\Desktop\\LEONID-DJANGO\\reports\\screenshots\\02-catalog-1440.png"
+    },
+    {
+      "name": "03-catalog-filter",
+      "width": 1440,
+      "status": 200,
+      "file": "C:\\Users\\AderungoPC\\Desktop\\LEONID-DJANGO\\reports\\screenshots\\03-catalog-filter-1440.png"
+    },
+    {
+      "name": "04-dish-detail",
+      "width": 1440,
+      "status": 200,
+      "file": "C:\\Users\\AderungoPC\\Desktop\\LEONID-DJANGO\\reports\\screenshots\\04-dish-detail-1440.png"
+    },
+    {
+      "name": "05-calculator",
+      "width": 1440,
+      "status": 200,
+      "file": "C:\\Users\\AderungoPC\\Desktop\\LEONID-DJANGO\\reports\\screenshots\\05-calculator-1440.png"
+    },
+    {
+      "name": "06-checkout",
+      "width": 1440,
+      "status": 200,
+      "file": "C:\\Users\\AderungoPC\\Desktop\\LEONID-DJANGO\\reports\\screenshots\\06-checkout-1440.png"
+    },
+    {
+      "name": "07-contacts",
+      "width": 1440,
+      "status": 200,
+      "file": "C:\\Users\\AderungoPC\\Desktop\\LEONID-DJANGO\\reports\\screenshots\\07-contacts-1440.png"
+    },
+    {
+      "name": "08-login",
+      "width": 1440,
+      "status": 200,
+      "file": "C:\\Users\\AderungoPC\\Desktop\\LEONID-DJANGO\\reports\\screenshots\\08-login-1440.png"
+    },
+    {
+      "name": "09-register",
+      "width": 1440,
+      "status": 200,
+      "file": "C:\\Users\\AderungoPC\\Desktop\\LEONID-DJANGO\\reports\\screenshots\\09-register-1440.png"
+    },
+    {
+      "name": "10-account",
+      "width": 1440,
+      "status": 200,
+      "file": "C:\\Users\\AderungoPC\\Desktop\\LEONID-DJANGO\\reports\\screenshots\\10-account-1440.png"
+    },
+    {
+      "name": "11-order-detail",
+      "width": 1440,
+      "status": 200,
+      "file": "C:\\Users\\AderungoPC\\Desktop\\LEONID-DJANGO\\reports\\screenshots\\11-order-detail-1440.png"
+    },
+    {
+      "name": "12-order-edit",
+      "width": 1440,
+      "status": 200,
+      "file": "C:\\Users\\AderungoPC\\Desktop\\LEONID-DJANGO\\reports\\screenshots\\12-order-edit-1440.png"
+    },
+    {
+      "name": "13-order-print",
+      "width": 1440,
+      "status": 200,
+      "file": "C:\\Users\\AderungoPC\\Desktop\\LEONID-DJANGO\\reports\\screenshots\\13-order-print-1440.png"
+    },
+    {
+      "name": "14-password-change",
+      "width": 1440,
+      "status": 200,
+      "file": "C:\\Users\\AderungoPC\\Desktop\\LEONID-DJANGO\\reports\\screenshots\\14-password-change-1440.png"
+    },
+    {
+      "name": "15-manager-dashboard",
+      "width": 1440,
+      "status": 200,
+      "file": "C:\\Users\\AderungoPC\\Desktop\\LEONID-DJANGO\\reports\\screenshots\\15-manager-dashboard-1440.png"
+    },
+    {
+      "name": "16-manager-orders",
+      "width": 1440,
+      "status": 200,
+      "file": "C:\\Users\\AderungoPC\\Desktop\\LEONID-DJANGO\\reports\\screenshots\\16-manager-orders-1440.png"
+    },
+    {
+      "name": "17-manager-dish-form",
+      "width": 1440,
+      "status": 200,
+      "file": "C:\\Users\\AderungoPC\\Desktop\\LEONID-DJANGO\\reports\\screenshots\\17-manager-dish-form-1440.png"
+    },
+    {
+      "name": "18-404",
+      "width": 1440,
+      "status": 404,
+      "file": "C:\\Users\\AderungoPC\\Desktop\\LEONID-DJANGO\\reports\\screenshots\\18-404-1440.png"
+    }
+  ],
+  "consoleIssues": [
+    {
+      "page": "18-404",
+      "width": 375,
+      "type": "console",
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)"
+    },
+    {
+      "page": "18-404",
+      "width": 1440,
+      "type": "console",
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)"
+    }
+  ]
+}

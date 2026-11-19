@@ -1,0 +1,137 @@
+<!DOCTYPE html><html lang="ru"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Вход — Банкетные решения</title>
+  <meta name="description" content="Кейтеринг и выездные банкеты: меню, калькулятор выхода еды и сметы, оформление заказа.">
+  <link rel="stylesheet" href="/static/css/style.css">
+  <link rel="icon" href="/static/img/favicon.svg" type="image/svg+xml">
+</head>
+<body>
+<a class="skip-link" href="#main">Перейти к содержанию</a>
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="logo" href="/" aria-label="Банкетные решения — на главную">
+      <span class="logo-mark">
+        <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 25h28"></path><path d="M9 25c0-6.6 4.9-11 11-11s11 4.4 11 11"></path><path d="M20 14v-3"></path><circle cx="20" cy="9" r="1.6"></circle><path d="M6 29h28"></path><path d="M12 25v4M28 25v4"></path></svg>
+      </span>
+      <span class="logo-text"><b>Банкетные решения</b><small>выездной кейтеринг · Ульяновск</small></span>
+    </a>
+    <nav class="main-nav" aria-label="Основная навигация">
+      <a href="/catalog/">Каталог блюд</a>
+      <a href="/calculator/">Калькулятор</a>
+      <a href="/checkout/">Оформить заказ</a>
+      <a href="/contacts/">Контакты</a>
+    </nav>
+    <div class="header-actions">
+      
+        <a class="btn btn-outline btn-sm" href="/login/">Войти</a>
+        <a class="btn btn-primary btn-sm" href="/register/">Регистрация</a>
+      
+      <button class="burger" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="mobile-menu"><span></span></button>
+    </div>
+  </div>
+  <div class="mobile-menu" id="mobile-menu">
+    <div class="container">
+      <nav aria-label="Мобильная навигация">
+        <a href="/catalog/">Каталог блюд</a>
+        <a href="/calculator/">Калькулятор</a>
+        <a href="/checkout/">Оформить заказ</a>
+        <a href="/contacts/">Контакты</a>
+        
+          <a href="/login/">Войти</a>
+          <a href="/register/">Регистрация</a>
+        
+      </nav>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+  
+</div>
+
+<main id="main">
+
+<div class="container">
+  <div class="auth-wrap">
+    <aside class="auth-aside">
+      <div>
+        <div class="eyebrow">Личный кабинет</div>
+        <h2>Заказ, дата и состав — под вашим контролем</h2>
+        <p>Войдите, чтобы изменить дату мероприятия, посмотреть смету и следить за статусом заявки. Данные сохраняются на сервере.</p>
+      </div>
+      <div class="auth-art">
+        <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 25h28"></path><path d="M9 25c0-6.6 4.9-11 11-11s11 4.4 11 11"></path><path d="M20 14v-3"></path><circle cx="20" cy="9" r="1.6"></circle><path d="M6 29h28"></path><path d="M12 25v4M28 25v4"></path></svg>
+      </div>
+    </aside>
+    <section class="auth-card" aria-labelledby="login-title">
+      <h1 id="login-title">С возвращением</h1>
+      <p class="sub">Введите e-mail и пароль, чтобы открыть личный кабинет.</p>
+
+      <div class="notice notice-info">
+        <div><strong>Демо-доступ:</strong> заказчик — ivan@example.com / ivan12345, менеджер — manager@banket.example / manager12345.</div>
+      </div>
+
+      
+
+      <form id="login-form" action="/login/" method="post" novalidate="">
+        <input type="hidden" name="csrfmiddlewaretoken" value="tiNwig6ZLptfG6AYBw6W1z68BpFln4N0yqLIw2nBG9me8CsQKcXGAejAGU1bcut0">
+        <input type="hidden" name="next" value="">
+        <div class="form-grid">
+          <div class="field">
+            <label for="id_username">E-mail</label>
+            <input type="email" name="username" placeholder="you@example.com" autocomplete="email" maxlength="150" class="input" required="" id="id_username">
+            
+          </div>
+          <div class="field">
+            <label for="id_password">Пароль</label>
+            <input type="password" name="password" placeholder="Не короче 8 символов" autocomplete="current-password" class="input" required="" id="id_password">
+            
+          </div>
+        </div>
+        <div class="auth-links">
+          <a href="/contacts/">Забыли пароль?</a>
+          <span class="muted">Пароли хранятся в виде хешей</span>
+        </div>
+        <button class="btn btn-primary btn-block auth-submit" type="submit">Войти</button>
+      </form>
+      <p class="auth-switch">Нет аккаунта? <a href="/register/">Зарегистрируйтесь</a></p>
+    </section>
+  </div>
+</div>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-main">
+    <div class="footer-brand">
+      <b>Банкетные решения</b>
+      <p>Ульяновск, ул. Гончарова, 1</p>
+      <a href="tel:+78422000000">+7 (8422) 00-00-00</a>
+      <a href="mailto:hello@banket.example">hello@banket.example</a>
+    </div>
+    <div class="footer-col">
+      <h3>Разделы</h3>
+      <a href="/catalog/">Каталог блюд</a>
+      <a href="/calculator/">Калькулятор</a>
+      <a href="/checkout/">Оформить заказ</a>
+      <a href="/contacts/">Контакты</a>
+    </div>
+    <div class="footer-col">
+      <h3>Кабинет</h3>
+      
+        <a href="/login/">Войти</a>
+        <a href="/register/">Регистрация</a>
+      
+    </div>
+  </div>
+  <div class="footer-bottom">© 2026 Банкетные решения. Учебный проект, вариант 16.</div>
+</footer>
+<div class="toast" id="toast" role="status" aria-live="polite">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 12 5 5 11-11"></path></svg><span></span>
+</div>
+<script src="/static/js/app.js"></script>
+
+
+
+</body></html>

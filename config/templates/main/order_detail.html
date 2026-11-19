@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+{% block title %}Заказ {{ order.number }} — Банкетные решения{% endblock %}
+
+{% block content %}
+<div class="container">
+  <nav class="breadcrumbs" aria-label="Хлебные крошки">
+    <a href="{% url 'main:index' %}">Главная</a><span>›</span>
+    <a href="{% url 'main:account' %}">Личный кабинет</a><span>›</span>
+    <span aria-current="page">Заказ {{ order.number }}</span>
+  </nav>
+
+  <div class="page-head">
+    <h1>Заказ {{ order.number }}</h1>
+    <p>Создан {{ order.created_at|date:"d E Y, H:i" }}. Статус обновляется менеджером, смета пересчитывается на сервере.</p>
+  </div>
+
+  {% if order.status == 'cancelled' %}
+    <div class="notice notice-error"><div><strong>Заказ отменён.</strong> Места на кухне освобождены, изменения недоступны.</div></div>
+  {% endif %}
+
+  <div class="split wide-left">
+    <div>
+      <article class="card">
+        <div class="order-top">
+          <div>
+            <h2 class="card-title">Смета мероприятия</h2>
+            <div class="small muted">{{ order.event_format.name }} · {{ order.event_date|date:"d E Y" }} · {{ order.guests }} гостей</div>
+          </div>
+          <span class="badge {{ order.status_css }}">{{ order.get_status_display }}</span>
+        </div>
+
+        <div class="table-wrap">
+          <table class="data">
+            <caption class="visually-hidden">Позиции заказа</caption>
+            <thead>
+              <tr><th scope="col">Позиция</th><th scope="col">Цена</th><th scope="col">Кол-во</th><th scope="col">Сумма</th></tr>
+            </thead>
+            <tbody>
+              {% for item in order.items.all %}
+                <tr>
+                  <td><a href="{{ item.dish.get_absolute_url }}">{{ item.dish.name }}</a> <span class="muted small">· {{ item.dish.category.name }}</span></td>
+                  <td>{{ item.unit_price|floatformat:0 }} ₽</td>
+                  <td>{{ item.qty }}</td>
+                  <td>{{ item.total|floatformat:0 }} ₽</td>
+                </tr>
+              {% empty %}
+                <tr><td colspan="4">Позиции не добавлены.</td></tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        <dl class="total-list">
+          <div><dt>Меню</dt><dd>{{ order.menu_total|floatformat:0 }} ₽</dd></div>
+          <div><dt>Оформление (+{{ order.decor_percent }} %)</dt><dd>{{ order.decor_total|floatformat:0 }} ₽</dd></div>
+          <div><dt>Персонал</dt><dd>{{ order.staff_total|floatformat:0 }} ₽</dd></div>
+          <div><dt>Посуда и текстиль</dt><dd>{{ order.tableware_total|floatformat:0 }} ₽</dd></div>
+          <div class="total-row"><dt>Итого</dt><dd>{{ order.total|floatformat:0 }} ₽</dd></div>
+        </dl>
+
+        <p class="small muted">Выход еды: <b>{{ order.output_per_guest }} г/чел.</b> при норме {{ order.event_format.min_output_per_guest }} г/чел. Официанты и комплекты посуды рассчитаны пропорционально числу гостей.</p>
+      </article>
+
+      <article class="card card-spaced">
+        <h2 class="card-title">Детали мероприятия</h2>
+        <dl class="kv">
+          <dt>Дата</dt><dd>{{ order.event_date|date:"d E Y" }}</dd>
+          <dt>Формат</dt><dd>{{ order.event_format.name }}</dd>
+          <dt>Гостей</dt><dd>{{ order.guests }}</dd>
+          <dt>Адрес</dt><dd>{{ order.address }}</dd>
+          <dt>Контакт</dt><dd>{{ order.contact_name }}, {{ order.contact_phone }}, {{ order.contact_email }}</dd>
+          {% if order.comment %}<dt>Комментарий</dt><dd>{{ order.comment }}</dd>{% endif %}
+          <dt>Смены персонала</dt>
+          <dd>
+            {% for shift in order.shifts.all %}
+              {{ shift.get_role_display }} × {{ shift.people }}{% if not forloop.last %}, {% endif %}
+            {% empty %}не назначены{% endfor %}
+          </dd>
+        </dl>
+
+        {% if order.sketch %}
+          <div class="sketch-block">
+            <h3>Загруженный эскиз</h3>
+            {% if order.sketch_is_image %}
+              <img class="sketch-preview" src="{{ order.sketch.url }}" alt="Эскиз оформления заказа {{ order.number }}" width="480" height="360" loading="lazy">
+            {% endif %}
+            <a class="btn btn-ghost btn-sm" href="{{ order.sketch.url }}">Открыть файл</a>
+          </div>
+        {% endif %}
+      </article>
+
+      {% if order.status == 'done' %}
+        <article class="card card-spaced">
+          <h2 class="card-title">Отзыв о мероприятии</h2>
+          {% if review %}
+            <div class="review-item">
+              <div class="review-head"><b>Ваша оценка: {{ review.rating }} / 5</b> <span class="small muted">{{ review.created_at|date:"d.m.Y" }}</span></div>
+              <p>{{ review.text }}</p>
+            </div>
+          {% elif user.pk == order.customer_id %}
+            <form action="{% url 'main:review_create' order.pk %}" method="post" novalidate>
+              {% csrf_token %}
+              <div class="form-grid">
+                <div class="field">
+                  <label for="{{ review_form.rating.id_for_label }}">Оценка</label>
+                  {{ review_form.rating }}
+                </div>
+                <div class="field full">
+                  <label for="{{ review_form.text.id_for_label }}">Текст отзыва</label>
+                  {{ review_form.text }}
+                </div>
+              </div>
+              <button class="btn btn-primary" type="submit">Отправить отзыв</button>
+            </form>
+          {% endif %}
+        </article>
+      {% endif %}
+    </div>
+
+    <aside class="card summary">
+      <h2>Управление</h2>
+      <div class="sum-row"><span>Статус</span><span class="badge {{ order.status_css }}">{{ order.get_status_display }}</span></div>
+      <div class="sum-row"><span>К оплате</span><span><b>{{ order.total|floatformat:0 }} ₽</b></span></div>
+      <div class="sum-divider"></div>
+      <div class="action-stack">
+        <a class="btn btn-primary btn-block" href="{% url 'main:order_print' order.pk %}">Печатная форма</a>
+        {% if can_edit and user.pk == order.customer_id %}
+          <a class="btn btn-outline btn-block" href="{% url 'main:order_edit' order.pk %}">Изменить заказ</a>
+        {% endif %}
+        <a class="btn btn-ghost btn-block" href="{% url 'main:account' %}">Все заказы</a>
+      </div>
+      {% if can_edit and user.pk == order.customer_id and order.status != 'cancelled' %}
+        <form action="{% url 'main:order_cancel' order.pk %}" method="post" class="cancel-form">
+          {% csrf_token %}
+          <button class="btn btn-ghost btn-block" type="submit" data-confirm="Отменить заказ? Отмена бесплатна не позднее чем за 48 часов.">Отменить заказ</button>
+        </form>
+        <p class="hint">Бесплатная отмена — не позднее чем за 48 часов до мероприятия.</p>
+      {% endif %}
+      {% if user.is_staff %}
+        <div class="sum-divider"></div>
+        <a class="btn btn-outline btn-block" href="{% url 'main:manager_orders' %}">Открыть в панели менеджера</a>
+      {% endif %}
+    </aside>
+  </div>
+</div>
+{% endblock %}

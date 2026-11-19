@@ -1,0 +1,528 @@
+<!DOCTYPE html><html lang="ru"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Каталог блюд и услуг — Банкетные решения</title>
+  <meta name="description" content="Каталог блюд, сетов и услуг кейтеринга с поиском, фильтрами и сортировкой.">
+  <link rel="stylesheet" href="/static/css/style.css">
+  <link rel="icon" href="/static/img/favicon.svg" type="image/svg+xml">
+</head>
+<body>
+<a class="skip-link" href="#main">Перейти к содержанию</a>
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="logo" href="/" aria-label="Банкетные решения — на главную">
+      <span class="logo-mark">
+        <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 25h28"></path><path d="M9 25c0-6.6 4.9-11 11-11s11 4.4 11 11"></path><path d="M20 14v-3"></path><circle cx="20" cy="9" r="1.6"></circle><path d="M6 29h28"></path><path d="M12 25v4M28 25v4"></path></svg>
+      </span>
+      <span class="logo-text"><b>Банкетные решения</b><small>выездной кейтеринг · Ульяновск</small></span>
+    </a>
+    <nav class="main-nav" aria-label="Основная навигация">
+      <a href="/catalog/" class="active" aria-current="page">Каталог блюд</a>
+      <a href="/calculator/">Калькулятор</a>
+      <a href="/checkout/">Оформить заказ</a>
+      <a href="/contacts/">Контакты</a>
+    </nav>
+    <div class="header-actions">
+      
+        <a class="btn btn-outline btn-sm" href="/login/">Войти</a>
+        <a class="btn btn-primary btn-sm" href="/register/">Регистрация</a>
+      
+      <button class="burger" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="mobile-menu"><span></span></button>
+    </div>
+  </div>
+  <div class="mobile-menu" id="mobile-menu">
+    <div class="container">
+      <nav aria-label="Мобильная навигация">
+        <a href="/catalog/">Каталог блюд</a>
+        <a href="/calculator/">Калькулятор</a>
+        <a href="/checkout/">Оформить заказ</a>
+        <a href="/contacts/">Контакты</a>
+        
+          <a href="/login/">Войти</a>
+          <a href="/register/">Регистрация</a>
+        
+      </nav>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+  
+</div>
+
+<main id="main">
+
+<div class="container">
+  <nav class="breadcrumbs" aria-label="Хлебные крошки">
+    <a href="/">Главная</a><span>›</span><span aria-current="page">Каталог блюд и услуг</span>
+  </nav>
+  <div class="page-head">
+    <h1>Каталог блюд и услуг</h1>
+    <p>Поиск по названию и составу, фильтры по категории, единице и цене, сортировка по названию, цене и выходу. Все позиции — из базы данных.</p>
+  </div>
+
+  <section class="panel" aria-labelledby="filters-title">
+    <h2 class="visually-hidden" id="filters-title">Фильтр каталога</h2>
+    <form class="filters" action="/catalog/" method="get">
+      <div class="field search-field">
+        <label for="q">Поиск</label>
+        <div class="search-box">
+          <input class="input" id="q" name="q" type="search" value="" placeholder="Например, «торт»" autocomplete="off" aria-describedby="search-hint">
+          <div class="suggestions" id="search-suggestions" hidden=""></div>
+        </div>
+        <span class="field-hint" id="search-hint">Подсказки появляются без перезагрузки страницы</span>
+      </div>
+      <div class="field">
+        <label for="category">Категория</label>
+        <select class="select" id="category" name="category">
+          <option value="">Все категории</option>
+          
+            <option value="salaty">Салаты</option>
+          
+            <option value="zakuski">Закуски</option>
+          
+            <option value="goryachee">Горячее</option>
+          
+            <option value="furshet">Фуршет</option>
+          
+            <option value="deserty">Десерты</option>
+          
+            <option value="napitki">Напитки</option>
+          
+            <option value="oformlenie">Оформление</option>
+          
+            <option value="arenda">Аренда</option>
+          
+            <option value="personal">Персонал</option>
+          
+        </select>
+      </div>
+      <div class="field">
+        <label for="unit">Единица</label>
+        <select class="select" id="unit" name="unit">
+          <option value="">Любая</option>
+          
+            <option value="portion">порция</option>
+          
+            <option value="guest">гость</option>
+          
+            <option value="item">шт.</option>
+          
+        </select>
+      </div>
+      <div class="field">
+        <label for="price_from">Цена от, ₽</label>
+        <input class="input" id="price_from" name="price_from" type="number" min="0" step="10" value="" inputmode="numeric">
+      </div>
+      <div class="field">
+        <label for="price_to">Цена до, ₽</label>
+        <input class="input" id="price_to" name="price_to" type="number" min="0" step="10" value="" inputmode="numeric">
+      </div>
+      <div class="field">
+        <label for="sort">Сортировка</label>
+        <select class="select" id="sort" name="sort">
+          
+            <option value="name" selected="">Название А–Я</option>
+          
+            <option value="-name">Название Я–А</option>
+          
+            <option value="price">Цена: сначала дешевле</option>
+          
+            <option value="-price">Цена: сначала дороже</option>
+          
+            <option value="output">Выход: больше</option>
+          
+        </select>
+      </div>
+      <div class="filter-actions">
+        <button class="btn btn-primary" type="submit">Применить</button>
+        <a class="btn btn-ghost" href="/catalog/">Сбросить</a>
+      </div>
+    </form>
+  </section>
+
+  <div class="catalog-bar">
+    <span>Найдено: <b>32</b> позиций</span>
+    <span>Страница <b>1</b> из <b>2</b></span>
+  </div>
+
+  <div class="dish-grid">
+    
+      <article class="dish-card">
+  <div class="dish-art">
+    
+      <svg viewBox="0 0 96 96" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 47h62c0 17-13 29-31 29S17 64 17 47Z"></path><path d="M23 47c5-12 14-19 25-19s20 7 25 19"></path><path d="M12 61h72" opacity=".55"></path></svg>
+    
+  </div>
+  <div class="dish-body">
+    <div class="dish-meta">Аренда<span>·</span>шт.</div>
+    <h3><a href="/catalog/tableware-rent/">Аренда посуды</a></h3>
+    <div class="dish-price">1200 ₽ <small>/ шт.</small></div>
+    <div class="dish-note">Выход: 0 г</div>
+    <a class="btn btn-outline btn-block" href="/catalog/tableware-rent/">Подробнее</a>
+  </div>
+</article>
+
+    
+      <article class="dish-card">
+  <div class="dish-art">
+    
+      <svg viewBox="0 0 96 96" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 47h62c0 17-13 29-31 29S17 64 17 47Z"></path><path d="M23 47c5-12 14-19 25-19s20 7 25 19"></path><path d="M12 61h72" opacity=".55"></path></svg>
+    
+  </div>
+  <div class="dish-body">
+    <div class="dish-meta">Персонал<span>·</span>шт.</div>
+    <h3><a href="/catalog/bartender/">Бармен на выезде</a></h3>
+    <div class="dish-price">6200 ₽ <small>/ шт.</small></div>
+    <div class="dish-note">Выход: 0 г</div>
+    <a class="btn btn-outline btn-block" href="/catalog/bartender/">Подробнее</a>
+  </div>
+</article>
+
+    
+      <article class="dish-card">
+  <div class="dish-art">
+    
+      <img class="dish-img" src="/media/dishes/bento.jpg" alt="Бенто-торт" width="480" height="360" loading="eager" decoding="async">
+    
+  </div>
+  <div class="dish-body">
+    <div class="dish-meta">Десерты<span>·</span>порция</div>
+    <h3><a href="/catalog/bento/">Бенто-торт</a></h3>
+    <div class="dish-price">890 ₽ <small>/ порция</small></div>
+    <div class="dish-note">Выход: 150 г</div>
+    <a class="btn btn-outline btn-block" href="/catalog/bento/">Подробнее</a>
+  </div>
+</article>
+
+    
+      <article class="dish-card">
+  <div class="dish-art">
+    
+      <img class="dish-img" src="/media/dishes/bruschetta.jpg" alt="Брускетты ассорти" width="480" height="360" loading="eager" decoding="async">
+    
+  </div>
+  <div class="dish-body">
+    <div class="dish-meta">Закуски<span>·</span>порция</div>
+    <h3><a href="/catalog/bruschetta/">Брускетты ассорти</a></h3>
+    <div class="dish-price">310 ₽ <small>/ порция</small></div>
+    <div class="dish-note">Выход: 120 г</div>
+    <a class="btn btn-outline btn-block" href="/catalog/bruschetta/">Подробнее</a>
+  </div>
+</article>
+
+    
+      <article class="dish-card">
+  <div class="dish-art">
+    
+      <svg viewBox="0 0 96 96" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 47h62c0 17-13 29-31 29S17 64 17 47Z"></path><path d="M23 47c5-12 14-19 25-19s20 7 25 19"></path><path d="M12 61h72" opacity=".55"></path></svg>
+    
+  </div>
+  <div class="dish-body">
+    <div class="dish-meta">Оформление<span>·</span>шт.</div>
+    <h3><a href="/catalog/garlands/">Гирлянды и свет</a></h3>
+    <div class="dish-price">5400 ₽ <small>/ шт.</small></div>
+    <div class="dish-note">Выход: 0 г</div>
+    <a class="btn btn-outline btn-block" href="/catalog/garlands/">Подробнее</a>
+  </div>
+</article>
+
+    
+      <article class="dish-card">
+  <div class="dish-art">
+    
+      <img class="dish-img" src="/media/dishes/dessert-table.jpg" alt="Десертный стол" width="480" height="360" loading="eager" decoding="async">
+    
+  </div>
+  <div class="dish-body">
+    <div class="dish-meta">Десерты<span>·</span>гость</div>
+    <h3><a href="/catalog/dessert-table/">Десертный стол</a></h3>
+    <div class="dish-price">520 ₽ <small>/ гость</small></div>
+    <div class="dish-note">Выход: 120 г</div>
+    <a class="btn btn-outline btn-block" href="/catalog/dessert-table/">Подробнее</a>
+  </div>
+</article>
+
+    
+      <article class="dish-card">
+  <div class="dish-art">
+    
+      <img class="dish-img" src="/media/dishes/canapes.jpg" alt="Канапе ассорти" width="480" height="360" loading="eager" decoding="async">
+    
+  </div>
+  <div class="dish-body">
+    <div class="dish-meta">Фуршет<span>·</span>порция</div>
+    <h3><a href="/catalog/canapes/">Канапе ассорти</a></h3>
+    <div class="dish-price">320 ₽ <small>/ порция</small></div>
+    <div class="dish-note">Выход: 120 г</div>
+    <a class="btn btn-outline btn-block" href="/catalog/canapes/">Подробнее</a>
+  </div>
+</article>
+
+    
+      <article class="dish-card">
+  <div class="dish-art">
+    
+      <img class="dish-img" src="/media/dishes/rustic-potatoes.jpg" alt="Картофель по-деревенски" width="480" height="360" loading="eager" decoding="async">
+    
+  </div>
+  <div class="dish-body">
+    <div class="dish-meta">Горячее<span>·</span>порция</div>
+    <h3><a href="/catalog/rustic-potatoes/">Картофель по-деревенски</a></h3>
+    <div class="dish-price">290 ₽ <small>/ порция</small></div>
+    <div class="dish-note">Выход: 180 г</div>
+    <a class="btn btn-outline btn-block" href="/catalog/rustic-potatoes/">Подробнее</a>
+  </div>
+</article>
+
+    
+      <article class="dish-card">
+  <div class="dish-art">
+    
+      <img class="dish-img" src="/media/dishes/business-coffee.jpg" alt="Кофе-брейк" width="480" height="360" loading="eager" decoding="async">
+    
+  </div>
+  <div class="dish-body">
+    <div class="dish-meta">Напитки<span>·</span>гость</div>
+    <h3><a href="/catalog/business-coffee/">Кофе-брейк</a></h3>
+    <div class="dish-price">450 ₽ <small>/ гость</small></div>
+    <div class="dish-note">Выход: 300 г</div>
+    <a class="btn btn-outline btn-block" href="/catalog/business-coffee/">Подробнее</a>
+  </div>
+</article>
+
+    
+      <article class="dish-card">
+  <div class="dish-art">
+    
+      <img class="dish-img" src="/media/dishes/chicken-vegetables.jpg" alt="Куриное филе с овощами" width="480" height="360" loading="eager" decoding="async">
+    
+  </div>
+  <div class="dish-body">
+    <div class="dish-meta">Горячее<span>·</span>порция</div>
+    <h3><a href="/catalog/chicken-vegetables/">Куриное филе с овощами</a></h3>
+    <div class="dish-price">480 ₽ <small>/ порция</small></div>
+    <div class="dish-note">Выход: 230 г</div>
+    <a class="btn btn-outline btn-block" href="/catalog/chicken-vegetables/">Подробнее</a>
+  </div>
+</article>
+
+    
+      <article class="dish-card">
+  <div class="dish-art">
+    
+      <img class="dish-img" src="/media/dishes/lemonade.jpg" alt="Лимонад «Цитрус»" width="480" height="360" loading="eager" decoding="async">
+    
+  </div>
+  <div class="dish-body">
+    <div class="dish-meta">Напитки<span>·</span>шт.</div>
+    <h3><a href="/catalog/lemonade/">Лимонад «Цитрус»</a></h3>
+    <div class="dish-price">180 ₽ <small>/ шт.</small></div>
+    <div class="dish-note">Выход: 330 г</div>
+    <a class="btn btn-outline btn-block" href="/catalog/lemonade/">Подробнее</a>
+  </div>
+</article>
+
+    
+      <article class="dish-card">
+  <div class="dish-art">
+    
+      <img class="dish-img" src="/media/dishes/medallion.jpg" alt="Медальон из говядины" width="480" height="360" loading="eager" decoding="async">
+    
+  </div>
+  <div class="dish-body">
+    <div class="dish-meta">Горячее<span>·</span>порция</div>
+    <h3><a href="/catalog/medallion/">Медальон из говядины</a></h3>
+    <div class="dish-price">540 ₽ <small>/ порция</small></div>
+    <div class="dish-note">Выход: 220 г</div>
+    <a class="btn btn-outline btn-block" href="/catalog/medallion/">Подробнее</a>
+  </div>
+</article>
+
+    
+      <article class="dish-card">
+  <div class="dish-art">
+    
+      <img class="dish-img" src="/media/dishes/mors.jpg" alt="Морс клюквенный" width="480" height="360" loading="eager" decoding="async">
+    
+  </div>
+  <div class="dish-body">
+    <div class="dish-meta">Напитки<span>·</span>шт.</div>
+    <h3><a href="/catalog/mors/">Морс клюквенный</a></h3>
+    <div class="dish-price">160 ₽ <small>/ шт.</small></div>
+    <div class="dish-note">Выход: 350 г</div>
+    <a class="btn btn-outline btn-block" href="/catalog/mors/">Подробнее</a>
+  </div>
+</article>
+
+    
+      <article class="dish-card">
+  <div class="dish-art">
+    
+      <img class="dish-img" src="/media/dishes/grilled-vegetables.jpg" alt="Овощи на гриле" width="480" height="360" loading="eager" decoding="async">
+    
+  </div>
+  <div class="dish-body">
+    <div class="dish-meta">Горячее<span>·</span>порция</div>
+    <h3><a href="/catalog/grilled-vegetables/">Овощи на гриле</a></h3>
+    <div class="dish-price">390 ₽ <small>/ порция</small></div>
+    <div class="dish-note">Выход: 200 г</div>
+    <a class="btn btn-outline btn-block" href="/catalog/grilled-vegetables/">Подробнее</a>
+  </div>
+</article>
+
+    
+      <article class="dish-card">
+  <div class="dish-art">
+    
+      <img class="dish-img" src="/media/dishes/vegetables.jpg" alt="Овощная нарезка" width="480" height="360" loading="eager" decoding="async">
+    
+  </div>
+  <div class="dish-body">
+    <div class="dish-meta">Закуски<span>·</span>порция</div>
+    <h3><a href="/catalog/vegetables/">Овощная нарезка</a></h3>
+    <div class="dish-price">240 ₽ <small>/ порция</small></div>
+    <div class="dish-note">Выход: 150 г</div>
+    <a class="btn btn-outline btn-block" href="/catalog/vegetables/">Подробнее</a>
+  </div>
+</article>
+
+    
+      <article class="dish-card">
+  <div class="dish-art">
+    
+      <svg viewBox="0 0 96 96" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 47h62c0 17-13 29-31 29S17 64 17 47Z"></path><path d="M23 47c5-12 14-19 25-19s20 7 25 19"></path><path d="M12 61h72" opacity=".55"></path></svg>
+    
+  </div>
+  <div class="dish-body">
+    <div class="dish-meta">Персонал<span>·</span>шт.</div>
+    <h3><a href="/catalog/waiter/">Официант</a></h3>
+    <div class="dish-price">4500 ₽ <small>/ шт.</small></div>
+    <div class="dish-note">Выход: 0 г</div>
+    <a class="btn btn-outline btn-block" href="/catalog/waiter/">Подробнее</a>
+  </div>
+</article>
+
+    
+      <article class="dish-card">
+  <div class="dish-art">
+    
+      <svg viewBox="0 0 96 96" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 47h62c0 17-13 29-31 29S17 64 17 47Z"></path><path d="M23 47c5-12 14-19 25-19s20 7 25 19"></path><path d="M12 61h72" opacity=".55"></path></svg>
+    
+  </div>
+  <div class="dish-body">
+    <div class="dish-meta">Оформление<span>·</span>шт.</div>
+    <h3><a href="/catalog/photo-zone/">Оформление фотозоны</a></h3>
+    <div class="dish-price">8000 ₽ <small>/ шт.</small></div>
+    <div class="dish-note">Выход: 0 г</div>
+    <a class="btn btn-outline btn-block" href="/catalog/photo-zone/">Подробнее</a>
+  </div>
+</article>
+
+    
+      <article class="dish-card">
+  <div class="dish-art">
+    
+      <img class="dish-img" src="/media/dishes/pilaf.jpg" alt="Плов с бараниной" width="480" height="360" loading="eager" decoding="async">
+    
+  </div>
+  <div class="dish-body">
+    <div class="dish-meta">Горячее<span>·</span>порция</div>
+    <h3><a href="/catalog/pilaf/">Плов с бараниной</a></h3>
+    <div class="dish-price">520 ₽ <small>/ порция</small></div>
+    <div class="dish-note">Выход: 250 г</div>
+    <a class="btn btn-outline btn-block" href="/catalog/pilaf/">Подробнее</a>
+  </div>
+</article>
+
+    
+      <article class="dish-card">
+  <div class="dish-art">
+    
+      <img class="dish-img" src="/media/dishes/profiteroles.jpg" alt="Профитроли" width="480" height="360" loading="eager" decoding="async">
+    
+  </div>
+  <div class="dish-body">
+    <div class="dish-meta">Десерты<span>·</span>порция</div>
+    <h3><a href="/catalog/profiteroles/">Профитроли</a></h3>
+    <div class="dish-price">410 ₽ <small>/ порция</small></div>
+    <div class="dish-note">Выход: 110 г</div>
+    <a class="btn btn-outline btn-block" href="/catalog/profiteroles/">Подробнее</a>
+  </div>
+</article>
+
+    
+      <article class="dish-card">
+  <div class="dish-art">
+    
+      <img class="dish-img" src="/media/dishes/mashed-potatoes.jpg" alt="Пюре картофельное" width="480" height="360" loading="eager" decoding="async">
+    
+  </div>
+  <div class="dish-body">
+    <div class="dish-meta">Горячее<span>·</span>порция</div>
+    <h3><a href="/catalog/mashed-potatoes/">Пюре картофельное</a></h3>
+    <div class="dish-price">240 ₽ <small>/ порция</small></div>
+    <div class="dish-note">Выход: 180 г</div>
+    <a class="btn btn-outline btn-block" href="/catalog/mashed-potatoes/">Подробнее</a>
+  </div>
+</article>
+
+    
+  </div>
+
+  
+    <nav class="pagination" aria-label="Страницы каталога">
+      
+        <span class="page-link is-disabled">←</span>
+      
+      
+        
+          <span class="page-link active" aria-current="page">1</span>
+        
+      
+        
+          <a class="page-link" href="?page=2">2</a>
+        
+      
+      
+        <a class="page-link" href="?page=2" rel="next">→</a>
+      
+    </nav>
+  
+</div>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-main">
+    <div class="footer-brand">
+      <b>Банкетные решения</b>
+      <p>Ульяновск, ул. Гончарова, 1</p>
+      <a href="tel:+78422000000">+7 (8422) 00-00-00</a>
+      <a href="mailto:hello@banket.example">hello@banket.example</a>
+    </div>
+    <div class="footer-col">
+      <h3>Разделы</h3>
+      <a href="/catalog/">Каталог блюд</a>
+      <a href="/calculator/">Калькулятор</a>
+      <a href="/checkout/">Оформить заказ</a>
+      <a href="/contacts/">Контакты</a>
+    </div>
+    <div class="footer-col">
+      <h3>Кабинет</h3>
+      
+        <a href="/login/">Войти</a>
+        <a href="/register/">Регистрация</a>
+      
+    </div>
+  </div>
+  <div class="footer-bottom">© 2026 Банкетные решения. Учебный проект, вариант 16.</div>
+</footer>
+<div class="toast" id="toast" role="status" aria-live="polite">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 12 5 5 11-11"></path></svg><span></span>
+</div>
+<script src="/static/js/app.js"></script>
+
+
+
+</body></html>
